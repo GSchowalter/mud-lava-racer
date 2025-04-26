@@ -10,21 +10,36 @@ export class Game extends Scene
 
     create ()
     {
-        this.cameras.main.setBackgroundColor(0x00ff00);
+        let { screenWidth, screenHeight } = this.sys.canvas;
 
-        this.add.image(512, 384, 'background').setAlpha(0.5);
-
-        this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5).setDepth(100);
+        this.add.grid(500, 500, 500, 500, 16, 16, 0x000000, 0.5, 0x000000, 0.5);
 
         EventBus.emit('current-scene-ready', this);
+    }
+
+    update ()
+    {
+        if (!this.player || !this.cursors) return;
+
+        // Tile size for movement
+        const TILE_SIZE = 16;
+
+        // Check for input and move the player
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+            this.player.x -= TILE_SIZE;
+        } else if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+            this.player.x += TILE_SIZE;
+        } else if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+            this.player.y -= TILE_SIZE;
+        } else if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+            this.player.y += TILE_SIZE;
+        }
     }
 
     changeScene ()
     {
         this.scene.start('GameOver');
     }
+
+    
 }

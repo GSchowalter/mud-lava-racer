@@ -1,0 +1,6 @@
+{
+    "Blank": {"Health": 0, "Moves": -1},
+    "Speeder": {"Health": -5, "Moves": 0},
+    "Lava": {"Health": -50, "Moves": -10},
+    "Mud": {"Health": -10, "Moves": -5}
+}
