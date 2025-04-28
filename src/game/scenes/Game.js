@@ -71,16 +71,16 @@ export class Game extends Scene
     update() {
         let keyPressed = false;
         // check for key presses
-        if (this.keys.LEFT.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT)) {
             this.playerState.moveLeft();
             keyPressed = true;
-        } else if (this.keys.RIGHT.isDown) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.RIGHT)) {
             this.playerState.moveRight();
             keyPressed = true;
-        } else if (this.keys.UP.isDown) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.UP)) {
             this.playerState.moveUp();
             keyPressed = true;
-        } else if (this.keys.DOWN.isDown) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.DOWN)) {
             this.playerState.moveDown();
             keyPressed = true;
         }
