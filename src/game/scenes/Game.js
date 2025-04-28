@@ -1,5 +1,5 @@
 import { EventBus } from '../EventBus';
-import { Scene } from 'phaser';
+import Phaser, { Scene } from 'phaser';
 import { Player } from '../dungeon/Player';
 import { DungeonBoard } from '../dungeon/DungeonBoard';
 
@@ -11,41 +11,45 @@ export class Game extends Scene
     playerSprite;
     playerState;
 
-    keyDown;
+    GRID_DIMENSION;
+    GRID_CELL_DIMENSION;
 
     constructor ()
     {
         super('Game');
+
+        this.GRID_DIMENSION = 700;
+        this.GRID_CELL_DIMENSION = this.GRID_DIMENSION / 50;
     }
 
     create ()
     {
+        // Set the background color
+        this.cameras.main.setBackgroundColor(0xe6fffe); // Light green
+
         let screenWidth = this.game.canvas.width;
         let screenHeight = this.game.canvas.height;
 
         const GRID_POSITION_X = screenWidth / 2;
         const GRID_POSITION_Y = screenHeight / 2;
-        const GRID_WIDTH = 500;
-        const GRID_HEIGHT = 500;
-        const GRID_CELL_DIMENSION = 10;
         const GRID_COLOR = 0x000000;
         const GRID_ALPHA = 0.5; 
 
         this.add.grid(
             GRID_POSITION_X, GRID_POSITION_Y,
-            GRID_WIDTH, GRID_HEIGHT,
-            GRID_CELL_DIMENSION, GRID_CELL_DIMENSION,
+            this.GRID_DIMENSION, this.GRID_DIMENSION,
+            this.GRID_CELL_DIMENSION, this.GRID_CELL_DIMENSION,
             GRID_COLOR, GRID_ALPHA,
             0x000000, 0x000000
         ).setOrigin(0.5, 0.5);
 
 
         this.playerState = new Player();
-        const PLAYER_SPRITE_POSITION_X = ((screenWidth / 2) - (this.GRID_WIDTH / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (GRID_CELL_DIMENSION / 2);
-        const PLAYER_SPRITE_POSITION_Y = ((screenHeight / 2) - (this.GRID_HEIGHT / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (GRID_CELL_DIMENSION / 2);
+        const PLAYER_SPRITE_POSITION_X = ((screenWidth / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (this.GRID_CELL_DIMENSION / 2);
+        const PLAYER_SPRITE_POSITION_Y = ((screenHeight / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (this.GRID_CELL_DIMENSION / 2);
         const PLAYER_SPRITE_SCALE = 0.125;
 
-        this.playerSprite = this.add.sprite(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y, 'star').setScale(PLAYER_SPRITE_SCALE);
+        this.playerSprite = this.add.sprite(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y, 'star').setScale(PLAYER_SPRITE_SCALE).setDepth(1000);
 
         const PLAYER_STATUS_POSITION_X = screenWidth / 8;
         const PLAYER_STATUS_POSITION_Y = screenHeight / 2;
@@ -63,7 +67,21 @@ export class Game extends Scene
         // Register keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
 
+        // Initialize the dungeon board state
         this.dungeonBoard = new DungeonBoard();
+
+        // Add status spaces to the dungeon board
+        for (const { position, space } of this.dungeonBoard) {
+            let spaceStatus = space;
+            let x = position.x;
+            let y = position.y;
+            this.add.rectangle(
+                ((screenWidth / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * x)) + (this.GRID_CELL_DIMENSION / 2),
+                ((screenHeight / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * y)) + (this.GRID_CELL_DIMENSION / 2),
+                this.GRID_CELL_DIMENSION, this.GRID_CELL_DIMENSION,
+                spaceStatus.color
+            ).setOrigin(0.5, 0.5).setAlpha(0.5);
+        }
 
         EventBus.emit('current-scene-ready', this);
     }
@@ -86,22 +104,28 @@ export class Game extends Scene
         }
 
         if(keyPressed) {
+            this.updatePlayerState();
             this.updatePlayerSpritePosition();
             this.updatePlayerStatusText();  
         }
 
     }
 
-    updatePlayerSpritePosition() {
-        const GRID_CELL_DIMENSION = 10;
-        const PLAYER_SPRITE_POSITION_X = ((this.game.canvas.width / 2) - (500 / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (GRID_CELL_DIMENSION / 2);
-        const PLAYER_SPRITE_POSITION_Y = ((this.game.canvas.height / 2) - (500 / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (GRID_CELL_DIMENSION / 2);
-        this.playerSprite.setPosition(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y);
-
-        //TODO seperate into an update state function
+    updatePlayerState() {
+        // Update the player state based on new space status and position
+        // TODO - check if player is dead
+        // TODO - check if player has no moves left
+        // TODO - check if player has won
+        // TODO - don't update if player is at the edge of the board
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoard.getSpace(playerPosition[0], playerPosition[1]);
         this.playerState.updateStatus(currentSpace);
+    }
+
+    updatePlayerSpritePosition() {
+        const PLAYER_SPRITE_POSITION_X = ((this.game.canvas.width / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (this.GRID_CELL_DIMENSION / 2);
+        const PLAYER_SPRITE_POSITION_Y = ((this.game.canvas.height / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (this.GRID_CELL_DIMENSION / 2);
+        this.playerSprite.setPosition(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y);
     }
     
     updatePlayerStatusText() {
@@ -114,6 +138,4 @@ export class Game extends Scene
     {
         this.scene.start('GameOver');
     }
-
-    
 }

@@ -10,7 +10,7 @@ class BlankSpace extends SpaceStatuses {
         this.spaceName = "Blank";
         this.healthHit = 0;
         this.movesHit = -1;
-        
+        this.color = 0xFFFFFF;
     }
 }
 
@@ -20,8 +20,8 @@ class SpeederSpace extends SpaceStatuses {
         this.spaceName = "Speeder";
         this.healthHit = -5;
         this.movesHit = 0;
+        this.color = 0x008223;
     }
-        
 }
 
 class LavaSpace extends SpaceStatuses {
@@ -30,7 +30,7 @@ class LavaSpace extends SpaceStatuses {
         this.spaceName = "Lava";
         this.healthHit = -50;
         this.movesHit = -10;
-        
+        this.color = 0xdb2114;
     }
 }
 
@@ -40,6 +40,7 @@ class MudSpace extends SpaceStatuses {
         this.spaceName = "Mud";
         this.healthHit = -50;
         this.movesHit = -10;
+        this.color = 0x452a28;
     }
 }
 
