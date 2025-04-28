@@ -47,9 +47,9 @@ export class Game extends Scene
         this.playerState = new Player();
         const PLAYER_SPRITE_POSITION_X = ((screenWidth / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (this.GRID_CELL_DIMENSION / 2);
         const PLAYER_SPRITE_POSITION_Y = ((screenHeight / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (this.GRID_CELL_DIMENSION / 2);
-        const PLAYER_SPRITE_SCALE = 0.125;
+        const PLAYER_SPRITE_SCALE = 0.5;
 
-        this.playerSprite = this.add.sprite(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y, 'star').setScale(PLAYER_SPRITE_SCALE).setDepth(1000);
+        this.playerSprite = this.add.sprite(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y, 'knight').setScale(PLAYER_SPRITE_SCALE).setDepth(1000);
 
         const PLAYER_STATUS_POSITION_X = screenWidth / 8;
         const PLAYER_STATUS_POSITION_Y = screenHeight / 2;
@@ -117,6 +117,9 @@ export class Game extends Scene
         // TODO - check if player has no moves left
         // TODO - check if player has won
         // TODO - don't update if player is at the edge of the board
+
+        // TODO - IDEA - if a player wins turn all specialties pieces into a game of life simulation
+        // TODO - IDEA - if a player dies invert board colors
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoard.getSpace(playerPosition[0], playerPosition[1]);
         this.playerState.updateStatus(currentSpace);
