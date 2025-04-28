@@ -30,8 +30,9 @@ class Player {
     }
 
     updateStatus(space) {
-        this.health -= space.Health;
-        this.moves -= space.Moves;
+        console.log("Update status");
+        this.health += space.healthHit;
+        this.moves += space.movesHit;
     }
 
     moveLeft() {

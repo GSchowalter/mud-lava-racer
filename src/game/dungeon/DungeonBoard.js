@@ -1,5 +1,5 @@
-import { SpaceStatuses } from SpaceStatuses
-import { Player } from Player
+import { Player } from "./Player.js"
+import { BlankSpace, LavaSpace, SpaceStatuses } from "./SpaceStatuses.js"
 
 class DungeonBoard {
     
@@ -7,7 +7,7 @@ class DungeonBoard {
     BOARD_COLS = 50;
 
     constructor() {
-        this.board = Array.from(Array(this.BOARD_ROWS), () => new Array(this.BOARD_COLS).fill(SpaceStatuses.Blank));
+        this.board = Array.from(Array(this.BOARD_ROWS), () => new Array(this.BOARD_COLS).fill(new LavaSpace));
         this.player = new Player();
         console.log("Dungeon Board constructed");
     }
@@ -17,3 +17,5 @@ class DungeonBoard {
     }
     
 }
+
+export { DungeonBoard }

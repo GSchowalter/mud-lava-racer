@@ -11,6 +11,8 @@ export class Game extends Scene
     playerSprite;
     playerState;
 
+    keyDown;
+
     constructor ()
     {
         super('Game');
@@ -61,25 +63,33 @@ export class Game extends Scene
         // Register keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
 
-        this.dungeonBoard = 
+        this.dungeonBoard = new DungeonBoard();
 
         EventBus.emit('current-scene-ready', this);
     }
 
     update() {
+        let keyPressed = false;
         // check for key presses
         if (this.keys.LEFT.isDown) {
             this.playerState.moveLeft();
+            keyPressed = true;
         } else if (this.keys.RIGHT.isDown) {
             this.playerState.moveRight();
+            keyPressed = true;
         } else if (this.keys.UP.isDown) {
             this.playerState.moveUp();
+            keyPressed = true;
         } else if (this.keys.DOWN.isDown) {
             this.playerState.moveDown();
+            keyPressed = true;
         }
 
-        this.updatePlayerSpritePosition();
-        this.updatePlayerStatusText();  
+        if(keyPressed) {
+            this.updatePlayerSpritePosition();
+            this.updatePlayerStatusText();  
+        }
+
     }
 
     updatePlayerSpritePosition() {
@@ -87,6 +97,11 @@ export class Game extends Scene
         const PLAYER_SPRITE_POSITION_X = ((this.game.canvas.width / 2) - (500 / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (GRID_CELL_DIMENSION / 2);
         const PLAYER_SPRITE_POSITION_Y = ((this.game.canvas.height / 2) - (500 / 2) + (GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (GRID_CELL_DIMENSION / 2);
         this.playerSprite.setPosition(PLAYER_SPRITE_POSITION_X, PLAYER_SPRITE_POSITION_Y);
+
+        //TODO seperate into an update state function
+        let playerPosition = this.playerState.getPosition();
+        let currentSpace = this.dungeonBoard.getSpace(playerPosition[0], playerPosition[1]);
+        this.playerState.updateStatus(currentSpace);
     }
     
     updatePlayerStatusText() {
