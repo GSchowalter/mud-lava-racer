@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import StartGame from './game/main';
 import { EventBus } from './game/EventBus';
 
-export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }, ref)
+export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, updatePlayerState }, ref)
 {
     const game = useRef();
 
@@ -40,6 +40,11 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }
             }
             ref.current.scene = currentScene;
             
+        });
+
+        EventBus.on('player-state-changed', (playerState) => {
+            updatePlayerState(playerState);
+            console.log('Player State Changed in event listener:', playerState);
         });
 
         return () => {

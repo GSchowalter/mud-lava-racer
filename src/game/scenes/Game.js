@@ -46,7 +46,7 @@ export class Game extends Scene {
         // Register keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
 
-        EventBus.on('movePlayer', (direction) => {
+        EventBus.on('move-player', (direction) => {
             console.log('direction recieved', direction);
             this.handleMovePlayer(direction)
         });
@@ -107,6 +107,7 @@ export class Game extends Scene {
             this.updatePlayerState();
             this.updatePlayerSpritePosition();
             this.updatePlayerStatusText();
+            EventBus.emit('player-state-changed', this.playerState);
         }
         console.log('Player Position:', this.playerState.getPosition());
     }

@@ -9,6 +9,7 @@ function App ()
 {
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
+    // Player can only be moved in the Game Scene
     const [canMovePlayer, setCanMovePlayer] = useState(false);
 
     const [health, setHealth] = useState(200);
@@ -77,22 +78,28 @@ function App ()
                 repeat: -1
             });
         }
-    }
+    };
 
     // Event emitted from the PhaserGame component
     const currentScene = (scene) => {
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
         setCanMovePlayer(scene.scene.key === 'Game');
-    }
+    };
+
+    // Event emitted from the PhaserGame when player state changes
+    const handlePlayerStateChanged = (playerState) => {
+        setHealth(playerState.health);
+        setMoves(playerState.moves);
+    };
 
     const handleDirection = (direction) => {
         console.log(`Move ${direction}`);
         // Add logic to move the sprite in the specified direction
         if (canMovePlayer) {
             //  Emit the event to move the player in the Phaser scene
-            EventBus.emit('movePlayer', direction);
+            EventBus.emit('move-player', direction);
         }
-    }
+    };
 
     const handleStart = () => {
         startGame();
@@ -105,7 +112,7 @@ function App ()
 
     return (
         <div id="app">
-            <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} />
+            <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChanged} />
             {/* <div>
                 <div>
                     <button className="button" onClick={startGame}>Start Game</button>
