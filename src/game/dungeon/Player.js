@@ -13,19 +13,19 @@ class Player {
 
     setPosition(x, y) {
         this.position = [x, y];
-    }   
+    }
 
     getHealth() {
         return this.health;
-    }   
+    }
 
     setHealth(health) {
         this.health = health;
-    }   
+    }
 
     getMoves() {
         return this.moves;
-    }   
+    }
 
     setMoves(moves) {
         this.moves = moves;
@@ -45,7 +45,7 @@ class Player {
         if (this.position[0] < 49) {
             this.position[0] += 1;
         }
-    }  
+    }
     moveUp() {
         if (this.position[1] > 0) {
             this.position[1] -= 1;

@@ -1,13 +1,16 @@
 import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace } from "./SpaceStatuses.js"
+import { GridConstants } from "../../config/Grid.js";
 
 class DungeonBoard {
-    
-    BOARD_ROWS = 50;
-    BOARD_COLS = 50;
+
+    boardRows;
+    boardCols;;
 
     constructor() {
+        this.boardRows = GridConstants.gridCells;
+        this.boardCols = GridConstants.gridCells;
         this.generateEasyRandomBoard();
-        this.addGoal(49, 49);
+        this.addGoal(this.boardRows - 1, this.boardCols - 1);
         this.addStart(0, 0);
     }
 
@@ -28,14 +31,14 @@ class DungeonBoard {
             console.error("Cannot place start space on non-space tile.");
         }
     }
-    
+
     generateEasyRandomBoard() {
         // Initialize the board with null values
-        this.board = Array.from({ length: this.BOARD_ROWS }, () => Array(this.BOARD_COLS).fill(null));
+        this.board = Array.from({ length: this.boardRows }, () => Array(this.boardCols).fill(null));
 
         // Fill board with random spaces with a bias towards BlankSpace
-        for (let row = 0; row < this.BOARD_ROWS; row++) {
-            for (let col = 0; col < this.BOARD_COLS; col++) {
+        for (let row = 0; row < this.boardRows; row++) {
+            for (let col = 0; col < this.boardCols; col++) {
                 const randomNum = Math.floor(Math.random() * 10); // 10 to increase the chance of BlankSpace
                 switch (randomNum) {
                     case 0:
@@ -59,11 +62,11 @@ class DungeonBoard {
 
     generateTrueRandomBoard() {
         // Initialize the board with null values
-        this.board = Array.from({ length: this.BOARD_ROWS }, () => Array(this.BOARD_COLS).fill(null));
+        this.board = Array.from({ length: this.boardRows }, () => Array(this.boardCols).fill(null));
 
         // Fill the board with random spaces
-        for (let row = 0; row < this.BOARD_ROWS; row++) {
-            for (let col = 0; col < this.BOARD_COLS; col++) {
+        for (let row = 0; row < this.boardRows; row++) {
+            for (let col = 0; col < this.boardCols; col++) {
                 const randomNum = Math.floor(Math.random() * 4);
                 switch (randomNum) {
                     case 0:
@@ -94,13 +97,13 @@ class DungeonBoard {
     // Define an iterator for the DungeonBoard that yields each space and its position
     // This abstracts the logic of iterating over the 2d array board
     *[Symbol.iterator]() {
-        for (let row = 0; row < this.BOARD_ROWS; row++) {
-            for (let col = 0; col < this.BOARD_COLS; col++) {
+        for (let row = 0; row < this.boardRows; row++) {
+            for (let col = 0; col < this.boardCols; col++) {
                 yield { position: { x: row, y: col }, space: this.board[row][col] };
             }
         }
     }
-    
+
 }
 
 export { DungeonBoard }

@@ -1,5 +1,5 @@
 class SpaceStatuses {
-    constructor(){
+    constructor() {
         this.spaceName = "Default";
         this.healthHit = 0;
         this.movesHit = 0;
@@ -70,4 +70,4 @@ class GoalSpace extends SpaceStatuses {
     }
 }
 
-export {BlankSpace, SpeederSpace, LavaSpace, MudSpace, SpaceStatuses, StartSpace, GoalSpace};
+export { BlankSpace, SpeederSpace, LavaSpace, MudSpace, SpaceStatuses, StartSpace, GoalSpace };

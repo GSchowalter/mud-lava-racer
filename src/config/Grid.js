@@ -5,4 +5,4 @@ const GridConstants = {
     gridCellDimension: 700 / 50
 }
 
-export { GridConstants };
+export { GridConstants }; 

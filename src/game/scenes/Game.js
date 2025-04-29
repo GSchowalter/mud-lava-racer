@@ -5,8 +5,7 @@ import { DungeonBoard } from '../dungeon/DungeonBoard';
 import themeManager from '../../config/ThemeManager';
 import { GridConstants } from '../../config/Grid.js';
 
-export class Game extends Scene
-{
+export class Game extends Scene {
     dungeonBoardState;
     playerStatusText;
     playerSprite;
@@ -14,8 +13,7 @@ export class Game extends Scene
     oldPlayerPosition;
     playerMoved;
 
-    constructor ()
-    {
+    constructor() {
         super('Game');
         this.oldPlayerPosition = [0, 0];
         this.playerMoved = false;
@@ -25,8 +23,7 @@ export class Game extends Scene
         this.dungeonBoardState = new DungeonBoard();
     }
 
-    create ()
-    {        
+    create() {
         let screenWidth = this.game.canvas.width;
         let screenHeight = this.game.canvas.height;
 
@@ -69,13 +66,13 @@ export class Game extends Scene
             keyPressed = true;
         }
 
-        if(keyPressed) {
+        if (keyPressed) {
             this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
             if (this.playerMoved) {
                 this.oldPlayerPosition = this.playerState.getPosition();
                 this.updatePlayerState();
                 this.updatePlayerSpritePosition();
-                this.updatePlayerStatusText(); 
+                this.updatePlayerStatusText();
             }
         }
     }
@@ -102,10 +99,10 @@ export class Game extends Scene
         const playerSpritePositionY = ((this.game.canvas.height / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * this.playerState.getPosition()[1])) + (GridConstants.gridCellDimension / 2);
         this.playerSprite.setPosition(playerSpritePositionX, playerSpritePositionY);
     }
-    
+
     updatePlayerStatusText() {
         this.playerStatusText.setText(`Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}\nPosition: [${this.playerState.getPosition()[0]}, ${this.playerState.getPosition()[1]}]`);
-    }   
+    }
 
     win() {
         this.scene.start('Win');
@@ -115,7 +112,7 @@ export class Game extends Scene
         this.scene.start('GameOver');
     }
 
-    changeScene () {
+    changeScene() {
         this.scene.start('GameOver');
     }
 
@@ -124,7 +121,7 @@ export class Game extends Scene
         const gridPositionX = screenWidth / 2;
         const gridPositionY = screenHeight / 2;
         const gridColor = theme.gridColor;
-        const gridAlpha = theme.gridAlpha; 
+        const gridAlpha = theme.gridAlpha;
         const gridOutlineFillColor = theme.gridOutlineFillColor;
         const gridOutlineAlpha = theme.gridOutlineAlpha;
 
@@ -136,7 +133,7 @@ export class Game extends Scene
             gridOutlineFillColor, gridOutlineAlpha
         ).setOrigin(0.5, 0.5);
 
-         
+
         // Add colored rectangles corresponding to the status of each dungeon space
         for (const { position, space } of this.dungeonBoardState) {
             let spaceStatus = space;
@@ -150,18 +147,18 @@ export class Game extends Scene
         }
     }
 
-    drawPlayer(screenWidth, screenHeight, theme) {
+    drawPlayer(screenWidth, screenHeight) {
         const { playerSpritePositionX, playerSpritePositionY } = this.playerState.getSpritePosition(screenWidth, screenHeight);
         const playerSpriteScale = 0.5;
         this.playerSprite = this.add.sprite(playerSpritePositionX, playerSpritePositionY, 'knight').setScale(playerSpriteScale).setDepth(1000);
     }
 
-    drawPlayerStatus(screenWidth, screenHeight, theme) {
+    drawPlayerStatus(screenWidth, screenHeight) {
         const plaerStatusPositionX = screenWidth / 12;
         const playerStatusPositionY = screenHeight / 2;
         this.playerStatusText = this.add.text(
             plaerStatusPositionX, playerStatusPositionY,
-            `Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}`, 
+            `Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}`,
             {
                 fontFamily: 'Arial Black', fontSize: 12, color: '#ffffff',
                 stroke: '#000000', strokeThickness: 2,
