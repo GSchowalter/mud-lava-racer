@@ -12,6 +12,7 @@ export class Game extends Scene {
     playerState;
     oldPlayerPosition;
     playerMoved;
+    keyPressed;
 
     constructor() {
         super('Game');
@@ -45,37 +46,71 @@ export class Game extends Scene {
         // Register keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
 
+        EventBus.on('movePlayer', (direction) => {
+            console.log('direction recieved', direction);
+            this.handleMovePlayer(direction)
+        });
+
         EventBus.emit('current-scene-ready', this);
     }
 
+    handleMovePlayer(direction) {
+        let isKeyPressed = false;
+    
+        // Move based on the direction received
+        if (direction === "left") {
+            this.playerState.moveLeft();
+            isKeyPressed = true;
+        } else if (direction === "right") {
+            this.playerState.moveRight();
+            isKeyPressed = true;
+        } else if (direction === "up") {
+            this.playerState.moveUp();
+            isKeyPressed = true;
+        } else if (direction === "down") {
+            this.playerState.moveDown();
+            isKeyPressed = true;
+        }
+    
+        if (isKeyPressed) {
+            this.updatePlayer();
+        }
+    }
+
     update() {
-        let keyPressed = false;
+        let isKeyPressed = false;
 
         // check for key presses
         if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT)) {
             this.playerState.moveLeft();
-            keyPressed = true;
+            isKeyPressed = true;
         } else if (Phaser.Input.Keyboard.JustDown(this.keys.RIGHT)) {
             this.playerState.moveRight();
-            keyPressed = true;
+            isKeyPressed = true;
         } else if (Phaser.Input.Keyboard.JustDown(this.keys.UP)) {
             this.playerState.moveUp();
-            keyPressed = true;
+            isKeyPressed = true;
         } else if (Phaser.Input.Keyboard.JustDown(this.keys.DOWN)) {
             this.playerState.moveDown();
-            keyPressed = true;
+            isKeyPressed = true;
         }
 
-        if (keyPressed) {
-            this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
-            if (this.playerMoved) {
-                this.oldPlayerPosition = this.playerState.getPosition();
-                this.updatePlayerState();
-                this.updatePlayerSpritePosition();
-                this.updatePlayerStatusText();
-            }
+        if (isKeyPressed) {
+            this.updatePlayer();
         }
     }
+
+    updatePlayer() {
+        this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
+        if (this.playerMoved) {
+            this.oldPlayerPosition = this.playerState.getPosition();
+            this.updatePlayerState();
+            this.updatePlayerSpritePosition();
+            this.updatePlayerStatusText();
+        }
+        console.log('Player Position:', this.playerState.getPosition());
+    }
+
 
     updatePlayerState() {
         // Update the player state based on new space status and position

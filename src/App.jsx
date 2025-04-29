@@ -2,15 +2,17 @@ import { useRef, useState } from 'react';
 
 import Phaser from 'phaser';
 import { PhaserGame } from './PhaserGame';
+import { EventBus } from './game/EventBus';
 import ArcadeControlPanel from './ArcadeControlPanel';
 
 function App ()
 {
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
+    const [canMovePlayer, setCanMovePlayer] = useState(false);
 
-    const health = useState(200);
-    const moves = useState(4500);
+    const [health, setHealth] = useState(200);
+    const [moves, setMoves] = useState(4500);
     
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
@@ -19,7 +21,7 @@ function App ()
     const startGame = () => {
         const scene = phaserRef.current.scene;
 
-        if (scene && scene.scene.key === 'MainMenu')
+        if (scene && (scene.scene.key === 'MainMenu' || scene.scene.key === 'GameOver'))
         {
             //  Start the game scene
             scene.changeScene();
@@ -79,19 +81,21 @@ function App ()
 
     // Event emitted from the PhaserGame component
     const currentScene = (scene) => {
-
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
-        
+        setCanMovePlayer(scene.scene.key === 'Game');
     }
 
     const handleDirection = (direction) => {
         console.log(`Move ${direction}`);
         // Add logic to move the sprite in the specified direction
-    };
+        if (canMovePlayer) {
+            //  Emit the event to move the player in the Phaser scene
+            EventBus.emit('movePlayer', direction);
+        }
+    }
 
     const handleStart = () => {
-        console.log('Start Game');
-        // Add logic to start the game
+        startGame();
     }   
 
     const handleSelect = () => { 
