@@ -8,6 +8,9 @@ function App ()
 {
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
+
+    const health = useState(200);
+    const moves = useState(4500);
     
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
@@ -86,6 +89,16 @@ function App ()
         // Add logic to move the sprite in the specified direction
     };
 
+    const handleStart = () => {
+        console.log('Start Game');
+        // Add logic to start the game
+    }   
+
+    const handleSelect = () => { 
+        console.log('Select');
+        // Add logic to select an item or perform an action
+    }
+
     return (
         <div id="app">
             <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} />
@@ -102,9 +115,11 @@ function App ()
             </div> */}
 
             <ArcadeControlPanel
-                onStart={startGame}
-                onMove={moveSprite}
-                onAddSprite={addSprite}
+                onStart={handleStart}
+                onSelect={handleSelect}
+                onDirection={handleDirection}
+                health={health}
+                moves={moves}
             />
         </div>
     )
