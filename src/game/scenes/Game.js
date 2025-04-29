@@ -2,8 +2,8 @@ import { EventBus } from '../EventBus';
 import Phaser, { Scene } from 'phaser';
 import { Player } from '../dungeon/Player';
 import { DungeonBoard } from '../dungeon/DungeonBoard';
-import themeManager from '../../config/ThemeManager';
-import { GridConstants } from '../../config/Grid.js';
+import themeManager from '../../config/ThemeManager.js';
+import { GridConstants } from '../../config/Grid.config.js';
 
 export class Game extends Scene {
     dungeonBoardState;

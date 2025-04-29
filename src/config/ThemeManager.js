@@ -1,4 +1,4 @@
-import { LightPalette, DarkPalette } from './Palette.js';
+import { LightPalette, DarkPalette } from './Palette.config.js';
 
 class ThemeManager {
     constructor() {

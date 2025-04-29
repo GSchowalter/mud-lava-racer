@@ -1,5 +1,5 @@
 import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace } from "./SpaceStatuses.js"
-import { GridConstants } from "../../config/Grid.js";
+import { GridConstants } from "../../config/Grid.config.js";
 
 class DungeonBoard {
 

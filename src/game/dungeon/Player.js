@@ -1,4 +1,4 @@
-import { GridConstants } from "../../config/Grid";
+import { GridConstants } from "../../config/Grid.config";
 
 class Player {
     constructor() {

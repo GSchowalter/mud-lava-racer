@@ -13,7 +13,7 @@ export class MainMenu extends Scene {
 
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);
 
-        this.add.text(512, 460, 'Cenith', {
+        this.add.text(512, 460, 'Lava Mud Maze', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -28,6 +28,10 @@ export class MainMenu extends Scene {
             this.logoTween = null;
         }
 
+        this.scene.start('Game');
+    }
+
+    startGame() {
         this.scene.start('Game');
     }
 

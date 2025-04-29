@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import Phaser from 'phaser';
 import { PhaserGame } from './PhaserGame';
+import ArcadeControlPanel from './ArcadeControlPanel';
 
 function App ()
 {
@@ -11,6 +12,16 @@ function App ()
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
     const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
+
+    const startGame = () => {
+        const scene = phaserRef.current.scene;
+
+        if (scene && scene.scene.key === 'MainMenu')
+        {
+            //  Start the game scene
+            scene.changeScene();
+        }
+    }
 
     const changeScene = () => {
 
@@ -70,12 +81,17 @@ function App ()
         
     }
 
+    const handleDirection = (direction) => {
+        console.log(`Move ${direction}`);
+        // Add logic to move the sprite in the specified direction
+    };
+
     return (
         <div id="app">
-            <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-            <div>
+            <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} />
+            {/* <div>
                 <div>
-                    <button className="button" onClick={changeScene}>Change Scene</button>
+                    <button className="button" onClick={startGame}>Start Game</button>
                 </div>
                 <div>
                     <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
@@ -83,12 +99,15 @@ function App ()
                 <div className="spritePosition">Sprite Position:
                     <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
                 </div>
-                <div>
-                    <button className="button" onClick={addSprite}>Add New Sprite</button>
-                </div>
-            </div>
+            </div> */}
+
+            <ArcadeControlPanel
+                onStart={startGame}
+                onMove={moveSprite}
+                onAddSprite={addSprite}
+            />
         </div>
     )
 }
 
-export default App
+export default App;

@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     color: rgba(255, 255, 255, 0.87);
-    background-color: #000000; 
+    background-color: #000000;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -11,6 +11,7 @@ body {
     height: 100vh;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -29,20 +30,118 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.87);
     cursor: pointer;
     transition: all 0.3s;
+}
 
-    &:hover {
-        border: 1px solid #0ec3c9;
-        color: #0ec3c9;
+.button:hover {
+    border: 1px solid #0ec3c9;
+    color: #0ec3c9;
+}
+
+.button:active {
+    background-color: #0ec3c9;
+}
+
+/* Disabled styles */
+.button:disabled {
+    cursor: not-allowed;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.arcade-control-panel {
+    width: 320px; /* Fixed width for a handheld console look */
+    height: 400px; /* Fixed height */
+    background: #333; /* Dark gray for the console body */
+    border: 6px solid #000; /* Black border for the console frame */
+    border-radius: 10px; /* Slightly rounded corners */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8); /* Deep shadow for depth */
+    position: relative;
+}
+
+.control-panel-header {
+    color: #fff; /* White text for contrast */
+    text-align: center;
+    font-family: 'Press Start 2P', sans-serif; /* Pixelated retro font */
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.arcade-button {
+    width: 80px;
+    height: 30px;
+    background: #ff0000; /* Solid red for action buttons */
+    border: 2px solid #770000; /* Darker red border */
+    border-radius: 5px; /* Slightly rounded for a retro feel */
+    color: #fff;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    transition: transform 0.1s ease;
+}
+
+.arcade-button:active {
+    transform: translateY(2px); /* Pressed effect */
+    box-shadow: none;
+}
+
+.arrow-key-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.arrow-key {
+    width: 50px;
+    height: 50px;
+    background: #444; /* Dark gray for the keys */
+    border: 2px solid #000; /* Black border */
+    border-radius: 5px; /* Slightly rounded corners */
+    color: #fff;
+    font-family: 'Press Start 2P', sans-serif; /* Retro pixelated font */
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    transition: transform 0.1s ease;
+}
+
+.arrow-key:active {
+    transform: translateY(2px); /* Pressed effect */
+    box-shadow: none;
+}
+
+.arrow-key-row {
+    display: flex;
+    gap: 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 480px) {
+    .arcade-control-panel {
+        width: 280px; /* Smaller width for mobile screens */
+        height: 350px;
+        padding: 15px;
     }
 
-    &:active {
-        background-color: #0ec3c9;
-    }
-
-    /* Disabled styles */
-    &:disabled {
-        cursor: not-allowed;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: rgba(255, 255, 255, 0.3);
+    .arcade-button {
+        width: 70px;
+        height: 25px;
+        font-size: 8px;
     }
 }
