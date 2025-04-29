@@ -66,7 +66,7 @@ class GoalSpace extends SpaceStatuses {
         this.spaceName = "Goal";
         this.healthHit = 0;
         this.movesHit = 0;
-        this.color = 0x00FF00; // Green
+        this.color = 0xeaff00; // Green
     }
 }
 
