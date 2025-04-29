@@ -10,6 +10,8 @@ export class Game extends Scene
     playerStatusText;
     playerSprite;
     playerState;
+    oldPlayerPosition;
+    playerMoved;
 
     GRID_DIMENSION;
     GRID_CELL_DIMENSION;
@@ -20,6 +22,9 @@ export class Game extends Scene
 
         this.GRID_DIMENSION = 700;
         this.GRID_CELL_DIMENSION = this.GRID_DIMENSION / 50;
+
+        this.oldPlayerPosition = [0, 0];
+        this.playerMoved = false;
     }
 
     create ()
@@ -43,7 +48,6 @@ export class Game extends Scene
             0x000000, 0x000000
         ).setOrigin(0.5, 0.5);
 
-
         this.playerState = new Player();
         const PLAYER_SPRITE_POSITION_X = ((screenWidth / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[0])) + (this.GRID_CELL_DIMENSION / 2);
         const PLAYER_SPRITE_POSITION_Y = ((screenHeight / 2) - (this.GRID_DIMENSION / 2) + (this.GRID_CELL_DIMENSION * this.playerState.getPosition()[1])) + (this.GRID_CELL_DIMENSION / 2);
@@ -58,8 +62,8 @@ export class Game extends Scene
             PLAYER_STATUS_POSITION_X, PLAYER_STATUS_POSITION_Y,
             `Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}`, 
             {
-                fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
-                stroke: '#000000', strokeThickness: 4,
+                fontFamily: 'Arial Black', fontSize: 12, color: '#ffffff',
+                stroke: '#000000', strokeThickness: 2,
                 align: 'left'
             }
         ).setOrigin(0.5, 0.5);
@@ -88,6 +92,7 @@ export class Game extends Scene
 
     update() {
         let keyPressed = false;
+
         // check for key presses
         if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT)) {
             this.playerState.moveLeft();
@@ -104,11 +109,19 @@ export class Game extends Scene
         }
 
         if(keyPressed) {
-            this.updatePlayerState();
-            this.updatePlayerSpritePosition();
-            this.updatePlayerStatusText();  
-        }
+            console.log("key pressed");
+            this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
+            console.log("playerMoved: ", this.playerMoved);
+            console.log("player position", this.playerState.getPosition());
+            console.log("oldPlayerPosition: ", this.oldPlayerPosition);
+            if (this.playerMoved) {
 
+                this.oldPlayerPosition = this.playerState.getPosition();
+                this.updatePlayerState();
+                this.updatePlayerSpritePosition();
+                this.updatePlayerStatusText(); 
+            }
+        }
     }
 
     updatePlayerState() {

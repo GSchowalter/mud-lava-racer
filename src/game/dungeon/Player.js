@@ -6,7 +6,7 @@ class Player {
     }
 
     getPosition() {
-        return this.position;
+        return [this.position[0], this.position[1]];
     }
 
     setPosition(x, y) {
