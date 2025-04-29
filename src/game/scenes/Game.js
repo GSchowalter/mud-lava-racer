@@ -87,6 +87,10 @@ export class Game extends Scene
             ).setOrigin(0.5, 0.5).setAlpha(0.5);
         }
 
+        // Add start and goal
+        this.dungeonBoard.addStart(0, 0);
+        this.dungeonBoard.addGoal(49, 49);
+
         EventBus.emit('current-scene-ready', this);
     }
 
@@ -131,10 +135,13 @@ export class Game extends Scene
         // TODO - check if player has won
         // TODO - don't update if player is at the edge of the board
 
-        // TODO - IDEA - if a player wins turn all specialties pieces into a game of life simulation
+        // TODO - IDEA - if a player wins turn all specialty pieces into a game of life simulation
         // TODO - IDEA - if a player dies invert board colors
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoard.getSpace(playerPosition[0], playerPosition[1]);
+        if (currentSpace.getSpaceName() === "Goal") {
+            this.win();
+        }
         this.playerState.updateStatus(currentSpace);
     }
 
@@ -149,6 +156,11 @@ export class Game extends Scene
         const PLAYER_STATUS_POSITION_Y = this.game.canvas.height / 2;
         this.playerStatusText.setText(`Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}\nPosition: [${this.playerState.getPosition()[0]}, ${this.playerState.getPosition()[1]}]`);
     }   
+
+    win() {
+        this.scene.start('Win');
+    }
+
 
     changeScene ()
     {

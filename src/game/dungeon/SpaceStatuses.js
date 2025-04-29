@@ -1,6 +1,12 @@
 class SpaceStatuses {
     constructor(){
-
+        this.spaceName = "Default";
+        this.healthHit = 0;
+        this.movesHit = 0;
+        this.color = 0x000000; // Default color (black)
+    }
+    getSpaceName() {
+        return this.spaceName;
     }
 }
 
@@ -44,4 +50,24 @@ class MudSpace extends SpaceStatuses {
     }
 }
 
-export {BlankSpace, SpeederSpace, LavaSpace, MudSpace, SpaceStatuses}
+class StartSpace extends SpaceStatuses {
+    constructor() {
+        super();
+        this.spaceName = "Start";
+        this.healthHit = 0;
+        this.movesHit = 0;
+        this.color = 0x0000FF; // Blue
+    }
+}
+
+class GoalSpace extends SpaceStatuses {
+    constructor() {
+        super();
+        this.spaceName = "Goal";
+        this.healthHit = 0;
+        this.movesHit = 0;
+        this.color = 0x00FF00; // Green
+    }
+}
+
+export {BlankSpace, SpeederSpace, LavaSpace, MudSpace, SpaceStatuses, StartSpace, GoalSpace};

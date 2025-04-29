@@ -1,5 +1,5 @@
 import { Player } from "./Player.js"
-import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses } from "./SpaceStatuses.js"
+import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace } from "./SpaceStatuses.js"
 
 class DungeonBoard {
     
@@ -11,11 +11,29 @@ class DungeonBoard {
         this.player = new Player();
         console.log("Dungeon Board constructed");
     }
+
+    addGoal(x, y) {
+        /// Add a goal space at the specified coordinates
+        if (this.board[x][y] instanceof SpaceStatuses) {
+            this.board[x][y] = new GoalSpace();
+        } else {
+            console.error("Cannot place goal space on non-space tile.");
+        }
+    }
+
+    addStart(x, y) {
+        /// Add a start space at the specified coordinates
+        if (this.board[x][y] instanceof SpaceStatuses) {
+            this.board[x][y] = new SpaceStatuses();
+        } else {
+            console.error("Cannot place start space on non-space tile.");
+        }
+    }
     
     generateEasyRandomBoard() {
         // Initialize the board with null values
         this.board = Array.from({ length: this.BOARD_ROWS }, () => Array(this.BOARD_COLS).fill(null));
-        
+
         // Fill board with random spaces with a bias towards BlankSpace
         for (let row = 0; row < this.BOARD_ROWS; row++) {
             for (let col = 0; col < this.BOARD_COLS; col++) {
