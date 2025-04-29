@@ -1,3 +1,5 @@
+import { GridConstants } from "../../config/Grid";
+
 class Player {
     constructor() {
         this.position = [0, 0];
@@ -30,7 +32,6 @@ class Player {
     }
 
     updateStatus(space) {
-        console.log("Update status");
         this.health += space.healthHit;
         this.moves += space.movesHit;
     }
@@ -54,6 +55,13 @@ class Player {
         if (this.position[1] < 49) {
             this.position[1] += 1;
         }
+    }
+
+    getSpritePosition(canvasWidth, canvasHeight) {
+        const currentPosition = this.getPosition();
+        const playerSpritePositionX = ((canvasWidth / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * currentPosition[0])) + (GridConstants.gridCellDimension / 2);
+        const playerSpritePositionY = ((canvasHeight / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * currentPosition[1])) + (GridConstants.gridCellDimension / 2);
+        return [playerSpritePositionX, playerSpritePositionY];
     }
 }
 

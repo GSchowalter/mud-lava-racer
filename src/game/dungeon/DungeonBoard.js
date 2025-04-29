@@ -1,4 +1,3 @@
-import { Player } from "./Player.js"
 import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace } from "./SpaceStatuses.js"
 
 class DungeonBoard {
@@ -8,8 +7,8 @@ class DungeonBoard {
 
     constructor() {
         this.generateEasyRandomBoard();
-        this.player = new Player();
-        console.log("Dungeon Board constructed");
+        this.addGoal(49, 49);
+        this.addStart(0, 0);
     }
 
     addGoal(x, y) {
