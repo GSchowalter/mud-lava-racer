@@ -1,4 +1,4 @@
-import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace } from "./SpaceStatuses.js"
+import { BlankSpace, LavaSpace, MudSpace, SpeederSpace, SpaceStatuses, GoalSpace, StartSpace } from "./SpaceStatuses.js"
 import { GridConstants } from "../../config/Grid.config.js";
 
 class DungeonBoard {
@@ -26,7 +26,7 @@ class DungeonBoard {
     addStart(x, y) {
         /// Add a start space at the specified coordinates
         if (this.board[x][y] instanceof SpaceStatuses) {
-            this.board[x][y] = new SpaceStatuses();
+            this.board[x][y] = new StartSpace();
         } else {
             console.error("Cannot place start space on non-space tile.");
         }

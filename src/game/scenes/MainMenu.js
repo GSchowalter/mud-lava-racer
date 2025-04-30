@@ -1,5 +1,7 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import themeManager from '../../config/ThemeManager.js';
+import { MenuConstants } from '../../config/Menu.config.js';
 
 export class MainMenu extends Scene {
     logoTween;
@@ -9,12 +11,20 @@ export class MainMenu extends Scene {
     }
 
     create() {
-        this.add.image(512, 384, 'background');
+        // Get theme colors from ThemeManager
+        const theme = themeManager.getTheme();
+        
+        // Set the background color
+        this.cameras.main.setBackgroundColor(theme.backgroundColor);
 
-        this.logo = this.add.image(512, 300, 'logo').setDepth(100);
+        this.add.text(MenuConstants.titlePosition[0], MenuConstants.titlePosition[1],MenuConstants.titleText, {
+                fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+                stroke: '#000000', strokeThickness: 8,
+                align: 'center'
+            }).setDepth(100).setOrigin(0.5);
 
-        this.add.text(512, 460, 'Lava Mud Maze', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+        this.add.text(MenuConstants.startPosition[0], MenuConstants.startPosition[1], MenuConstants.startText, {
+            fontFamily: 'Arial Black', fontSize: MenuConstants.startFontSize, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setDepth(100).setOrigin(0.5);

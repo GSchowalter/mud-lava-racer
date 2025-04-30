@@ -42,7 +42,7 @@ export class Game extends Scene {
         this.drawPlayer(screenWidth, screenHeight, theme);
 
         // Draw player status box. For debugging purposes only
-        this.drawPlayerStatus(screenWidth, screenHeight, theme);
+        // this.drawPlayerStatus(screenWidth, screenHeight, theme);
 
         
         EventBus.on('move-player', (direction) => {
@@ -123,7 +123,7 @@ export class Game extends Scene {
             this.oldPlayerPosition = this.playerState.getPosition();
             this.updatePlayerState();
             this.updatePlayerSpritePosition();
-            this.updatePlayerStatusText();
+            // this.updatePlayerStatusText();
         }
     }
 

@@ -1,5 +1,5 @@
 const LightPalette = {
-    backgroundColor: 0xe6fffe, // Light green
+    backgroundColor: 0xf2f0ef, // Off white
     gridColor: 0xffffffff, // White
     gridAlpha: 0.0,
     playerColor: 0x0000ff, // Blue
