@@ -41,8 +41,8 @@ export class Game extends Scene {
         // Draw player sprite
         this.drawPlayer(screenWidth, screenHeight, theme);
 
-        // Draw player status box
-        this.drawPlayerStatus(screenWidth, screenHeight, theme);
+        // Draw player status box. For debugging purposes only
+        // this.drawPlayerStatus(screenWidth, screenHeight, theme);
 
         // Register keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
@@ -61,7 +61,7 @@ export class Game extends Scene {
 
     handleMovePlayer(direction) {
         let isKeyPressed = false;
-    
+
         // Move based on the direction received
         if (direction === "left") {
             this.playerState.moveLeft();
@@ -76,7 +76,7 @@ export class Game extends Scene {
             this.playerState.moveDown();
             isKeyPressed = true;
         }
-    
+
         if (isKeyPressed) {
             this.updatePlayer();
         }
@@ -101,21 +101,20 @@ export class Game extends Scene {
         }
 
         if (isKeyPressed) {
-            this.updatePlayer();
+            this.updateState();
         }
     }
 
-    updatePlayer() {
+    updateState() {
         this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
         if (this.playerMoved) {
             this.oldPlayerPosition = this.playerState.getPosition();
             this.updatePlayerState();
             this.updatePlayerSpritePosition();
-            this.updatePlayerStatusText();
+            // this.updatePlayerStatusText();
             EventBus.emit('player-state-changed', this.playerState);
         }
     }
-
 
     updatePlayerState() {
         // Update the player state based on new space status and position
