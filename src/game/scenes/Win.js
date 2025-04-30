@@ -25,4 +25,14 @@ export class Win extends Scene {
         this.scene.start('MainMenu');
     }
 
+    start() {
+        EventBus.emit('reset');
+        this.scene.start('MainMenu');
+    }
+
+    reset() {
+        EventBus.emit('reset');
+        this.scene.start('MainMenu');
+    }
+
 }

@@ -21,7 +21,7 @@ function App() {
     const startGame = () => {
         const scene = phaserRef.current.scene;
 
-        if (scene && (scene.scene.key === 'MainMenu' || scene.scene.key === 'GameOver')) {
+        if (scene) {
             //  Start the game scene
             scene.start();
         }
@@ -33,7 +33,7 @@ function App() {
         if (scene && (scene.scene.key === 'Game')) {
             console.log("Resetting game from app.jsx");
             scene.retry();
-        } else if (scene && (scene.scene.key === 'GameOver')) {
+        } else if (scene && (scene.scene.key === 'GameOver' || scene.scene.key === 'Win')) {
             console.log("Resetting game from app.jsx");
             scene.reset();
         }
