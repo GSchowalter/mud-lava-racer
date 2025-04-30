@@ -86,6 +86,13 @@ class DungeonBoard {
         }
     }
 
+    reset() {
+        // Reset the board to its initial state
+        this.generateEasyRandomBoard();
+        this.addGoal(this.boardRows - 1, this.boardCols - 1);
+        this.addStart(0, 0);
+    }
+
     getSpace(x, y) {
         return this.board[x][y];
     }

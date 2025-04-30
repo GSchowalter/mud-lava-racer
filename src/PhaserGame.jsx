@@ -44,7 +44,6 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, 
 
         EventBus.on('player-state-changed', (playerState) => {
             updatePlayerState(playerState);
-            console.log('Player State Changed in event listener:', playerState);
         });
 
         return () => {

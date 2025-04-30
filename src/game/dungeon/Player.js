@@ -63,6 +63,13 @@ class Player {
         const playerSpritePositionY = ((canvasHeight / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * currentPosition[1])) + (GridConstants.gridCellDimension / 2);
         return [playerSpritePositionX, playerSpritePositionY];
     }
+
+    reset() {
+        console.log("Player reset");
+        this.position = [0, 0];
+        this.health = 200;
+        this.moves = 4500;
+    }
 }
 
 export { Player };

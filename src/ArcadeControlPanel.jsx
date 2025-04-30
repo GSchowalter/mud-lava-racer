@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ArcadeControlPanel = ({ onStart, onSelect, onDirection, health, moves }) => {
+const ArcadeControlPanel = ({ onStart, onReset, onDirection, health, moves }) => {
     return (
         <div className="arcade-control-panel">
             {/* Player Status */}
@@ -12,7 +12,7 @@ const ArcadeControlPanel = ({ onStart, onSelect, onDirection, health, moves }) =
             {/* Top row: Start and Select buttons */}
             <div className="control-buttons">
                 <button className="arcade-button" onClick={onStart}>Start</button>
-                <button className="arcade-button" onClick={onSelect}>Select</button>
+                <button className="arcade-button" onClick={onReset}>Reset</button>
             </div>
 
             {/* Bottom row: Arrow keys */}

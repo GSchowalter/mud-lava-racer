@@ -5,8 +5,7 @@ import { PhaserGame } from './PhaserGame';
 import { EventBus } from './game/EventBus';
 import ArcadeControlPanel from './ArcadeControlPanel';
 
-function App ()
-{
+function App() {
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
     // Player can only be moved in the Game Scene
@@ -14,7 +13,7 @@ function App ()
 
     const [health, setHealth] = useState(200);
     const [moves, setMoves] = useState(4500);
-    
+
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
     const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
@@ -22,10 +21,18 @@ function App ()
     const startGame = () => {
         const scene = phaserRef.current.scene;
 
-        if (scene && (scene.scene.key === 'MainMenu' || scene.scene.key === 'GameOver'))
-        {
+        if (scene && (scene.scene.key === 'MainMenu' || scene.scene.key === 'GameOver')) {
             //  Start the game scene
-            scene.changeScene();
+            scene.start();
+        }
+    }
+
+    const resetGame = () => {
+        const scene = phaserRef.current.scene;
+
+        if (scene) {
+            console.log("Resetting game from app.jsx");
+            scene.reset();
         }
     }
 
@@ -33,8 +40,7 @@ function App ()
 
         const scene = phaserRef.current.scene;
 
-        if (scene)
-        {
+        if (scene) {
             scene.changeScene();
         }
     }
@@ -43,8 +49,7 @@ function App ()
 
         const scene = phaserRef.current.scene;
 
-        if (scene && scene.scene.key === 'MainMenu')
-        {
+        if (scene && scene.scene.key === 'MainMenu') {
             // Get the update logo position
             scene.moveLogo(({ x, y }) => {
 
@@ -58,8 +63,7 @@ function App ()
 
         const scene = phaserRef.current.scene;
 
-        if (scene)
-        {
+        if (scene) {
             // Add more stars
             const x = Phaser.Math.Between(64, scene.scale.width - 64);
             const y = Phaser.Math.Between(64, scene.scale.height - 64);
@@ -88,12 +92,12 @@ function App ()
 
     // Event emitted from the PhaserGame when player state changes
     const handlePlayerStateChanged = (playerState) => {
+        console.log("handlePlayerStateChanged triggered", playerState);
         setHealth(playerState.health);
         setMoves(playerState.moves);
     };
 
     const handleDirection = (direction) => {
-        console.log(`Move ${direction}`);
         // Add logic to move the sprite in the specified direction
         if (canMovePlayer) {
             //  Emit the event to move the player in the Phaser scene
@@ -103,11 +107,11 @@ function App ()
 
     const handleStart = () => {
         startGame();
-    }   
+    }
 
-    const handleSelect = () => { 
-        console.log('Select');
-        // Add logic to select an item or perform an action
+    const handleReset = () => {
+        console.log("Reset button hit");
+        resetGame();
     }
 
     return (
@@ -127,7 +131,7 @@ function App ()
 
             <ArcadeControlPanel
                 onStart={handleStart}
-                onSelect={handleSelect}
+                onReset={handleReset}
                 onDirection={handleDirection}
                 health={health}
                 moves={moves}

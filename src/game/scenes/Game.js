@@ -21,6 +21,7 @@ export class Game extends Scene {
 
         // Initialize player state and dungeon board
         this.playerState = new Player();
+        console.log('New player state created:', this.playerState);
         this.dungeonBoardState = new DungeonBoard();
     }
 
@@ -47,8 +48,12 @@ export class Game extends Scene {
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
 
         EventBus.on('move-player', (direction) => {
-            console.log('direction recieved', direction);
             this.handleMovePlayer(direction)
+        });
+
+        EventBus.on('reset', () => {
+            console.log('reset listener in Game scene');
+            this.reset();
         });
 
         EventBus.emit('current-scene-ready', this);
@@ -109,13 +114,11 @@ export class Game extends Scene {
             this.updatePlayerStatusText();
             EventBus.emit('player-state-changed', this.playerState);
         }
-        console.log('Player Position:', this.playerState.getPosition());
     }
 
 
     updatePlayerState() {
         // Update the player state based on new space status and position
-        // TODO - IDEA - if a player dies invert board colors
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoardState.getSpace(playerPosition[0], playerPosition[1]);
         if (currentSpace.getSpaceName() === "Goal") {
@@ -145,7 +148,24 @@ export class Game extends Scene {
     }
 
     lose() {
+        this.resetState();
+        this.scene.restart();
         this.scene.start('GameOver');
+    }
+
+    reset() {
+        console.log("Reset function in Game scene");
+        this.playerState.reset();
+        this.scene.restart();
+    }
+
+    resetState() {
+        this.playerState.reset();
+        this.dungeonBoardState.reset();
+        this.playerSprite.setPosition(this.getGridSpritePosition(this.playerState.getPosition()));
+
+        // Update react
+        EventBus.emit('player-state-changed', this.playerState);
     }
 
     changeScene() {
@@ -202,7 +222,6 @@ export class Game extends Scene {
             }
         ).setOrigin(0.5, 0.5);
     }
-
 
     //Utilty fnuctions
     getGridSpritePosition(boardPosition) {

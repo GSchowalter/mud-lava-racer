@@ -31,7 +31,7 @@ export class MainMenu extends Scene {
         this.scene.start('Game');
     }
 
-    startGame() {
+    start() {
         this.scene.start('Game');
     }
 

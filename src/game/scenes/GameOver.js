@@ -1,5 +1,6 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import { Player } from '../dungeon/Player';
 
 export class GameOver extends Scene {
     constructor() {
@@ -20,7 +21,14 @@ export class GameOver extends Scene {
         EventBus.emit('current-scene-ready', this);
     }
 
-    changeScene() {
+    start() {
+        EventBus.emit('player-state-changed', new Player());
+        this.scene.start('MainMenu');
+    }
+
+    reset() {
+        EventBus.emit('player-state-changed', new Player());
+        this.scene.restart();
         this.scene.start('MainMenu');
     }
 }
