@@ -78,7 +78,7 @@ export class Game extends Scene {
         }
 
         if (isKeyPressed) {
-            this.updatePlayer();
+            this.updateState();
         }
     }
 
