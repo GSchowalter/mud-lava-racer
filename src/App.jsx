@@ -30,7 +30,10 @@ function App() {
     const resetGame = () => {
         const scene = phaserRef.current.scene;
 
-        if (scene) {
+        if (scene && (scene.scene.key === 'Game')) {
+            console.log("Resetting game from app.jsx");
+            scene.retry();
+        } else if (scene && (scene.scene.key === 'GameOver')) {
             console.log("Resetting game from app.jsx");
             scene.reset();
         }

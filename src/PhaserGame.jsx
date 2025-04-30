@@ -47,12 +47,11 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, 
         });
 
         return () => {
-
             EventBus.removeListener('current-scene-ready');
-
+            EventBus.removeListener('player-state-changed');
         }
         
-    }, [currentActiveScene, ref])
+    }, [currentActiveScene, updatePlayerState, ref])
 
     return (
         <div id="game-container"></div>

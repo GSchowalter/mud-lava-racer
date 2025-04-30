@@ -22,13 +22,14 @@ export class GameOver extends Scene {
     }
 
     start() {
-        EventBus.emit('player-state-changed', new Player());
+        EventBus.emit('reset');
         this.scene.start('MainMenu');
     }
 
     reset() {
-        EventBus.emit('player-state-changed', new Player());
-        this.scene.restart();
-        this.scene.start('MainMenu');
+        // Try again on the same board
+        // Don't reset the entire scene
+        console.log("GameOver reset");
+        this.scene.switch('Game');
     }
 }

@@ -1,4 +1,5 @@
 import { GridConstants } from "../../config/Grid.config";
+import { EventBus } from "../EventBus.js";
 
 class Player {
     constructor() {
@@ -34,6 +35,7 @@ class Player {
     updateStatus(space) {
         this.health += space.healthHit;
         this.moves += space.movesHit;
+        EventBus.emit('player-state-changed', this);
     }
 
     moveLeft() {
@@ -66,9 +68,11 @@ class Player {
 
     reset() {
         console.log("Player reset");
-        this.position = [0, 0];
-        this.health = 200;
-        this.moves = 4500;
+        this.setPosition(0, 0);
+        this.setHealth(200);
+        this.setMoves(4500);
+        // Update react
+        EventBus.emit('player-state-changed', this);
     }
 }
 

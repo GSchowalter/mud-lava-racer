@@ -56,7 +56,7 @@ class StartSpace extends SpaceStatuses {
         this.spaceName = "Start";
         this.healthHit = 0;
         this.movesHit = 0;
-        this.color = 0x0000FF; // Blue
+        this.color = 0x000000;
     }
 }
 

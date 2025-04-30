@@ -42,11 +42,9 @@ export class Game extends Scene {
         this.drawPlayer(screenWidth, screenHeight, theme);
 
         // Draw player status box. For debugging purposes only
-        // this.drawPlayerStatus(screenWidth, screenHeight, theme);
+        this.drawPlayerStatus(screenWidth, screenHeight, theme);
 
-        // Register keys
-        this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
-
+        
         EventBus.on('move-player', (direction) => {
             this.handleMovePlayer(direction)
         });
@@ -56,11 +54,24 @@ export class Game extends Scene {
             this.reset();
         });
 
+        EventBus.on('retry', () => {
+            console.log('retry listener in Game scene');
+            this.retry();
+        });
+
+        console.log("event listeners added in Game scene");
+
+        // Register keys
+        this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
+
+        console.log("Player sprite exists", this.playerSprite);
+
         EventBus.emit('current-scene-ready', this);
     }
 
     handleMovePlayer(direction) {
         let isKeyPressed = false;
+        console.log("Player sprite exists in handleMovePlayer", this.playerSprite);
 
         // Move based on the direction received
         if (direction === "left") {
@@ -106,13 +117,13 @@ export class Game extends Scene {
     }
 
     updateState() {
+        console.log("player sprite exists in updateState", this.playerSprite)
         this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
         if (this.playerMoved) {
             this.oldPlayerPosition = this.playerState.getPosition();
             this.updatePlayerState();
             this.updatePlayerSpritePosition();
-            // this.updatePlayerStatusText();
-            EventBus.emit('player-state-changed', this.playerState);
+            this.updatePlayerStatusText();
         }
     }
 
@@ -120,14 +131,17 @@ export class Game extends Scene {
         // Update the player state based on new space status and position
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoardState.getSpace(playerPosition[0], playerPosition[1]);
+
+        // Check if the player has reached the goal space
         if (currentSpace.getSpaceName() === "Goal") {
             this.win();
         }
+
+        // Update player state with space effect
         this.playerState.updateStatus(currentSpace);
-        if (this.playerState.getHealth() <= 0) {
-            this.lose();
-        }
-        if (this.playerState.getMoves() <= 0) {
+
+        // Check if player is dead or out of moves
+        if (this.playerState.getHealth() <= 0 || this.playerState.getMoves() <= 0) {
             this.lose();
         }
     }
@@ -135,6 +149,8 @@ export class Game extends Scene {
     updatePlayerSpritePosition() {
         const playerSpritePositionX = ((this.game.canvas.width / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * this.playerState.getPosition()[0])) + (GridConstants.gridCellDimension / 2);
         const playerSpritePositionY = ((this.game.canvas.height / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * this.playerState.getPosition()[1])) + (GridConstants.gridCellDimension / 2);
+        console.log("Update Player sprite position:", playerSpritePositionX, playerSpritePositionY);
+        console.log("player sprite", this.playerSprite);
         this.playerSprite.setPosition(playerSpritePositionX, playerSpritePositionY);
     }
 
@@ -143,28 +159,38 @@ export class Game extends Scene {
     }
 
     win() {
+        this.reset();
         this.scene.start('Win');
     }
 
     lose() {
-        this.resetState();
-        this.scene.restart();
+        this.retry();
+        this.removeListeners();
         this.scene.start('GameOver');
     }
 
-    reset() {
-        console.log("Reset function in Game scene");
-        this.playerState.reset();
-        this.scene.restart();
+    removeListeners() {
+        // Remove listeners
+        EventBus.removeListener('move-player');
+        EventBus.removeListener('reset');
+        EventBus.removeListener('retry');
+        console.log("Listeners removed");
     }
 
-    resetState() {
+    reset() {
+        console.log("Full reset function in game scene");
+        this.removeListeners();
+
         this.playerState.reset();
         this.dungeonBoardState.reset();
-        this.playerSprite.setPosition(this.getGridSpritePosition(this.playerState.getPosition()));
+        this.updateState();
+    }
 
-        // Update react
-        EventBus.emit('player-state-changed', this.playerState);
+    retry() {
+        console.log("Retry function in Game scene");
+        // Reset player state
+        this.playerState.reset();
+        this.updateState();
     }
 
     changeScene() {
@@ -203,9 +229,10 @@ export class Game extends Scene {
     }
 
     drawPlayer(screenWidth, screenHeight) {
-        const { playerSpritePositionX, playerSpritePositionY } = this.playerState.getSpritePosition(screenWidth, screenHeight);
+        const playerPosition = this.playerState.getSpritePosition(screenWidth, screenHeight);
         const playerSpriteScale = 0.5;
-        this.playerSprite = this.add.sprite(playerSpritePositionX, playerSpritePositionY, 'knight').setScale(playerSpriteScale).setDepth(1000);
+        this.playerSprite = this.add.sprite(playerPosition[0], playerPosition[1], 'knight').setScale(playerSpriteScale).setDepth(1000);
+        console.log("Player sprite created:", this.playerSprite);
     }
 
     drawPlayerStatus(screenWidth, screenHeight) {

@@ -2,7 +2,7 @@ import { LightPalette, DarkPalette } from './Palette.config.js';
 
 class ThemeManager {
     constructor() {
-        this.currentTheme = DarkPalette; // Default to light theme
+        this.currentTheme = LightPalette; // Default to light theme
     }
 
     setTheme(theme) {
