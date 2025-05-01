@@ -1,13 +1,13 @@
 {
-    "name": "template-react",
-    "description": "A Phaser 3 project template that demonstrates React communication and uses Vite for bundling.",
+    "name": "mud-lava-racer",
+    "description": "A grid based game built on Phaser and React.",
     "version": "1.2.0",
     "type": "module",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/phaserjs/template-react.git"
+        "url": "git+https://github.com/GSchowalter/mud-lava-racer"
     },
-    "author": "Phaser Studio <support@phaser.io> (https://phaser.io/)",
+    "author": "Grant Schowalter",
     "license": "MIT",
     "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
     "bugs": {

@@ -1,4 +1,4 @@
-import { EventBus } from '../EventBus';
+import { EventBus } from '../EventBus.js';
 import { Scene } from 'phaser';
 import themeManager from '../../config/ThemeManager.js';
 import { MenuConstants } from '../../config/Menu.config.js';
@@ -21,13 +21,13 @@ export class MainMenu extends Scene {
                 fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
                 stroke: '#000000', strokeThickness: 8,
                 align: 'center'
-            }).setDepth(100).setOrigin(0.5);
+            }).setDepth(100).setOrigin(0.5, 0.5);
 
         this.add.text(MenuConstants.startPosition[0], MenuConstants.startPosition[1], MenuConstants.startText, {
             fontFamily: 'Arial Black', fontSize: MenuConstants.startFontSize, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setDepth(100).setOrigin(0.5);
+        }).setDepth(100).setOrigin(0.5, 0.5);
 
         EventBus.emit('current-scene-ready', this);
     }

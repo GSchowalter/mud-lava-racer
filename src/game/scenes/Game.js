@@ -21,7 +21,6 @@ export class Game extends Scene {
 
         // Initialize player state and dungeon board
         this.playerState = new Player();
-        console.log('New player state created:', this.playerState);
         this.dungeonBoardState = new DungeonBoard();
     }
 

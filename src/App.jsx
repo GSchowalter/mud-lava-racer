@@ -119,6 +119,7 @@ function App() {
 
     return (
         <div id="app">
+            <h1>Mud Lava Racer</h1>
             <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChanged} />
             {/* <div>
                 <div>

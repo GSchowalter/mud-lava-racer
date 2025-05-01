@@ -1,6 +1,6 @@
 const GameConstants = {
     // Grid size
-    windowWidth: 1024,
+    windowWidth: 768,
     windowHeight: 768,
     backgroundColor: '#028af8',
 }

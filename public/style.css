@@ -24,7 +24,6 @@ body {
 .arcade-control-panel {
     width: 100%;
     max-width: 300px; /* Limit the width for a handheld console feel */
-    background: #222; /* Dark gray for the console body */
     border: 4px solid #000; /* Black border for the console frame */
     border-radius: 10px; /* Slightly rounded corners */
     padding: 20px;

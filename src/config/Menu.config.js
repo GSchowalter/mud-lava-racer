@@ -1,6 +1,6 @@
 const MenuConstants = {
     titlePosition: [512, 320],
-    titleText: "Lava Mud Racer",
+    titleText: "Mud Lava Racer",
     startPosition: [512, 420],
     startText: "Press Start",
     startFontSize: 24
