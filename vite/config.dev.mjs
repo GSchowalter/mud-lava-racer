@@ -7,6 +7,11 @@ export default defineConfig({
     plugins: [
         react(),
     ],
+    test: {
+      globals: true,
+      environment: 'jsdon',
+      setupFiles: './test/setup.js',
+  },
     server: {
         port: 8080
     }

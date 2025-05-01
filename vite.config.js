@@ -9,7 +9,7 @@ const phasermsg = () => {
         },
         buildEnd() {
             const line = "---------------------------------------------------------";
-            const msg = `❤️❤️❤️ Tell us about your game! - games@phaser.io ❤️❤️❤️`;
+            const msg = `❤️❤️❤️ Built ❤️❤️❤️`;
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
 
             process.stdout.write(`✨ Done ✨\n`);
@@ -25,7 +25,7 @@ export default defineConfig({
     ],
     test: {
         globals: true,
-        environment: 'jsdon',
+        environment: 'jsdom',
         setupFiles: './test/setup.js',
     },
     logLevel: 'warning',
