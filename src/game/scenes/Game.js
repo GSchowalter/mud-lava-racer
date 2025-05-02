@@ -5,25 +5,45 @@ import { DungeonBoard } from '../dungeon/DungeonBoard';
 import themeManager from '../../config/ThemeManager.js';
 import { GridConstants } from '../../config/Grid.config.js';
 
+/**
+ * Represents the main game scene in the Mud Lava Racer game.
+ * Manages the player, dungeon board, and game state.
+ */
 export class Game extends Scene {
-    dungeonBoardState;
-    playerStatusText;
-    playerSprite;
-    playerState;
-    oldPlayerPosition;
-    playerMoved;
-    keyPressed;
-
+    /**
+     * Initializes the Game scene.
+     */
     constructor() {
         super('Game');
+
+        /**
+         * The player's previous position on the grid.
+         * @type {number[]}
+         */
         this.oldPlayerPosition = [0, 0];
+
+        /**
+         * Indicates whether the player has moved.
+         * @type {boolean}
+         */
         this.playerMoved = false;
 
-        // Initialize player state and dungeon board
+        /**
+         * The player's state.
+         * @type {Player}
+         */
         this.playerState = new Player();
+
+        /**
+         * The dungeon board state.
+         * @type {DungeonBoard}
+         */
         this.dungeonBoardState = new DungeonBoard();
     }
 
+    /**
+     * Called when the scene is created. Sets up the game environment, event listeners, and player.
+     */
     create() {
         let screenWidth = this.game.canvas.width;
         let screenHeight = this.game.canvas.height;
@@ -34,45 +54,29 @@ export class Game extends Scene {
         // Set the background color
         this.cameras.main.setBackgroundColor(theme.backgroundColor);
 
-        // Draw the grid
+        // Draw the grid and player
         this.drawGrid(screenWidth, screenHeight, theme);
-
-        // Draw player sprite
         this.drawPlayer(screenWidth, screenHeight, theme);
 
-        // Draw player status box. For debugging purposes only
-        // this.drawPlayerStatus(screenWidth, screenHeight, theme);
+        // Register event listeners
+        EventBus.on('move-player', (direction) => this.handleMovePlayer(direction));
+        EventBus.on('reset', () => this.reset());
+        EventBus.on('retry', () => this.retry());
 
-        
-        EventBus.on('move-player', (direction) => {
-            this.handleMovePlayer(direction)
-        });
-
-        EventBus.on('reset', () => {
-            console.log('reset listener in Game scene');
-            this.reset();
-        });
-
-        EventBus.on('retry', () => {
-            console.log('retry listener in Game scene');
-            this.retry();
-        });
-
-        console.log("event listeners added in Game scene");
-
-        // Register keys
+        // Register keyboard keys
         this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN,W,A,S,D,G,L');
 
-        console.log("Player sprite exists", this.playerSprite);
-
+        // Notify that the scene is ready
         EventBus.emit('current-scene-ready', this);
     }
 
+    /**
+     * Handles player movement based on the given direction.
+     * @param {string} direction - The direction to move the player ('left', 'right', 'up', 'down').
+     */
     handleMovePlayer(direction) {
         let isKeyPressed = false;
-        console.log("Player sprite exists in handleMovePlayer", this.playerSprite);
 
-        // Move based on the direction received
         if (direction === "left") {
             this.playerState.moveLeft();
             isKeyPressed = true;
@@ -92,10 +96,12 @@ export class Game extends Scene {
         }
     }
 
+    /**
+     * Called on every game update. Handles keyboard input for player movement.
+     */
     update() {
         let isKeyPressed = false;
 
-        // check for key presses
         if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT) || Phaser.Input.Keyboard.JustDown(this.keys.A)) {
             this.playerState.moveLeft();
             isKeyPressed = true;
@@ -121,144 +127,137 @@ export class Game extends Scene {
         }
     }
 
+    /**
+     * Updates the game state, including the player's position and status.
+     */
     updateState() {
-        console.log("player sprite exists in updateState", this.playerSprite)
         this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
         if (this.playerMoved) {
             this.oldPlayerPosition = this.playerState.getPosition();
             this.updatePlayerState();
             this.updatePlayerSpritePosition();
-            // this.updatePlayerStatusText();
         }
     }
 
+    /**
+     * Updates the player's state based on the current space on the dungeon board.
+     */
     updatePlayerState() {
-        // Update the player state based on new space status and position
         let playerPosition = this.playerState.getPosition();
         let currentSpace = this.dungeonBoardState.getSpace(playerPosition[0], playerPosition[1]);
 
-        // Check if the player has reached the goal space
         if (currentSpace.getSpaceName() === "Goal") {
             this.win();
         }
 
-        // Update player state with space effect
         this.playerState.updateStatus(currentSpace);
 
-        // Check if player is dead or out of moves
         if (this.playerState.getHealth() <= 0 || this.playerState.getMoves() <= 0) {
             this.lose();
         }
     }
 
+    /**
+     * Updates the player's sprite position on the canvas.
+     */
     updatePlayerSpritePosition() {
         const playerSpritePositionX = ((this.game.canvas.width / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * this.playerState.getPosition()[0])) + (GridConstants.gridCellDimension / 2);
         const playerSpritePositionY = ((this.game.canvas.height / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * this.playerState.getPosition()[1])) + (GridConstants.gridCellDimension / 2);
-        console.log("Update Player sprite position:", playerSpritePositionX, playerSpritePositionY);
-        console.log("player sprite", this.playerSprite);
         this.playerSprite.setPosition(playerSpritePositionX, playerSpritePositionY);
     }
 
-    updatePlayerStatusText() {
-        this.playerStatusText.setText(`Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}\nPosition: [${this.playerState.getPosition()[0]}, ${this.playerState.getPosition()[1]}]`);
+    /**
+     * Resets the game state and player to their initial values.
+     */
+    reset() {
+        this.removeListeners();
+        this.playerState.reset();
+        this.dungeonBoardState.reset();
+        this.updateState();
     }
 
+    /**
+     * Retries the game by resetting the player state.
+     */
+    retry() {
+        this.playerState.reset();
+        this.updateState();
+    }
+
+    /**
+     * Handles the win condition by transitioning to the Win scene.
+     */
     win() {
         this.reset();
         this.scene.start('Win');
     }
 
+    /**
+     * Handles the lose condition by transitioning to the GameOver scene.
+     */
     lose() {
         this.retry();
         this.removeListeners();
         this.scene.start('GameOver');
     }
 
+    /**
+     * Removes all event listeners from the EventBus.
+     */
     removeListeners() {
-        // Remove listeners
         EventBus.removeListener('move-player');
         EventBus.removeListener('reset');
         EventBus.removeListener('retry');
-        console.log("Listeners removed");
     }
 
-    reset() {
-        console.log("Full reset function in game scene");
-        this.removeListeners();
-
-        this.playerState.reset();
-        this.dungeonBoardState.reset();
-        this.updateState();
-    }
-
-    retry() {
-        console.log("Retry function in Game scene");
-        // Reset player state
-        this.playerState.reset();
-        this.updateState();
-    }
-
-    changeScene() {
-        this.scene.start('GameOver');
-    }
-
-    // Draw functiions
+    /**
+     * Draws the dungeon grid on the canvas.
+     * @param {number} screenWidth - The width of the screen.
+     * @param {number} screenHeight - The height of the screen.
+     * @param {Object} theme - The theme object containing grid colors and styles.
+     */
     drawGrid(screenWidth, screenHeight, theme) {
         const gridPositionX = screenWidth / 2;
         const gridPositionY = screenHeight / 2;
-        const gridColor = theme.gridColor;
-        const gridAlpha = theme.gridAlpha;
-        const gridOutlineFillColor = theme.gridOutlineFillColor;
-        const gridOutlineAlpha = theme.gridOutlineAlpha;
 
         this.add.grid(
             gridPositionX, gridPositionY,
             GridConstants.gridDimension, GridConstants.gridDimension,
             GridConstants.gridCellDimension, GridConstants.gridCellDimension,
-            gridColor, gridAlpha,
-            gridOutlineFillColor, gridOutlineAlpha
+            theme.gridColor, theme.gridAlpha,
+            theme.gridOutlineFillColor, theme.gridOutlineAlpha
         ).setOrigin(0.5, 0.5);
 
-
-        // Add colored rectangles corresponding to the status of each dungeon space
         for (const { position, space } of this.dungeonBoardState) {
-            let spaceStatus = space;
             let { spritePositionX, spritePositionY } = this.getGridSpritePosition([position.x, position.y]);
             this.add.rectangle(
                 spritePositionX,
                 spritePositionY,
                 GridConstants.gridCellDimension, GridConstants.gridCellDimension,
-                spaceStatus.color
+                space.color
             ).setOrigin(0.5, 0.5).setAlpha(0.5);
         }
     }
 
+    /**
+     * Draws the player's sprite on the canvas.
+     * @param {number} screenWidth - The width of the screen.
+     * @param {number} screenHeight - The height of the screen.
+     */
     drawPlayer(screenWidth, screenHeight) {
         const playerPosition = this.playerState.getSpritePosition(screenWidth, screenHeight);
         const playerSpriteScale = 0.5;
         this.playerSprite = this.add.sprite(playerPosition[0], playerPosition[1], 'knight').setScale(playerSpriteScale).setDepth(1000);
-        console.log("Player sprite created:", this.playerSprite);
     }
 
-    drawPlayerStatus(screenWidth, screenHeight) {
-        const plaerStatusPositionX = screenWidth / 12;
-        const playerStatusPositionY = screenHeight / 2;
-        this.playerStatusText = this.add.text(
-            plaerStatusPositionX, playerStatusPositionY,
-            `Player Status: \nHealth: ${this.playerState.getHealth()}\nMoves: ${this.playerState.getMoves()}`,
-            {
-                fontFamily: 'Arial Black', fontSize: 12, color: '#ffffff',
-                stroke: '#000000', strokeThickness: 2,
-                align: 'left'
-            }
-        ).setOrigin(0.5, 0.5);
-    }
-
-    //Utilty fnuctions
+    /**
+     * Calculates the sprite position on the grid for a given board position.
+     * @param {number[]} boardPosition - The board position as [x, y].
+     * @returns {Object} The sprite position as { spritePositionX, spritePositionY }.
+     */
     getGridSpritePosition(boardPosition) {
         const gridPositionX = ((this.game.canvas.width / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * boardPosition[0])) + (GridConstants.gridCellDimension / 2);
         const gridPositionY = ((this.game.canvas.height / 2) - (GridConstants.gridDimension / 2) + (GridConstants.gridCellDimension * boardPosition[1])) + (GridConstants.gridCellDimension / 2);
         return { spritePositionX: gridPositionX, spritePositionY: gridPositionY };
     }
-
 }
