@@ -3,8 +3,6 @@
 This is a simple web game built using Phaser 3 and React. You play as a knight tasked with dodging lava, mud, and speeding your way
 through a dungeon to reach the finish.
 
-**[This application was built starting with the Phaser React Template.](https://github.com/phaserjs/template-react)**
-
 ## Game Manual
 
 ### Get Started
@@ -47,10 +45,12 @@ This will start a local server at `http://localhost:8080`. Navigate to that URL 
 
 ### Versions
 
+**[This application was built starting with the Phaser React Template.](https://github.com/phaserjs/template-react)**
+
 This project runs on the following versions of the libraries:
 
 - [Phaser 3.88.2](https://github.com/phaserjs/phaser)
-- [React 19.0.0](https://github.com/facebook/react)s
+- [React 19.0.0](https://github.com/facebook/react)
 - [Vite 6.3.1](https://github.com/vitejs/vite)
 
 ## Available Commands
