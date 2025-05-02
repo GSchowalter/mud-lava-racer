@@ -22,9 +22,8 @@ body {
 }
 
 .title {
-    font-size: 1em;
+    font-size: .75em;
     color: #ffff;
-    margin-top: 10px;
 }
 
 .arcade-control-panel {
