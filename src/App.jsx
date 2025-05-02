@@ -78,7 +78,7 @@ function App() {
 
     return (
         <div id="app">
-            <h1>Mud Lava Racer</h1>
+            <div className="title"><h1>Mud Lava Racer</h1></div>
             <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChange} />
             <ArcadeControlPanel
                 onStart={handleStart}

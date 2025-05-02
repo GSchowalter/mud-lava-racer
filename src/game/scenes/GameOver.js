@@ -36,6 +36,24 @@ export class GameOver extends Scene {
             align: 'center'
         }).setOrigin(0.5, 0.5).setDepth(100);
 
+        this.add.text(GameConstants.windowHeight / 2, GameConstants.windowWidth / 2 + 100, 'Press Start to return to Main Menu', {
+            fontFamily: 'Arial Black',
+            fontSize: 28,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 6,
+            align: 'center'
+        }).setOrigin(0.5, 0.5).setDepth(100);
+
+        this.add.text(GameConstants.windowHeight / 2, GameConstants.windowWidth / 2 + 140, 'Press Reset to retry the same board', {
+            fontFamily: 'Arial Black',
+            fontSize: 28,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 6,
+            align: 'center'
+        }).setOrigin(0.5, 0.5).setDepth(100);
+
         // Emit an event to indicate the scene is ready
         EventBus.emit('current-scene-ready', this);
     }
