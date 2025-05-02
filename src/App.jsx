@@ -3,7 +3,7 @@ import React from 'react';
 
 import { PhaserGame } from './PhaserGame';
 import ArcadeControlPanel from './ArcadeControlPanel';
-import EventBus from './EventBus';
+import { EventBus } from './game/EventBus';
 import { startGame, resetGame } from './handlers/ArcadeControlPanel';
 
 /**
@@ -18,6 +18,8 @@ function App() {
 
     // Player can only be moved in the Game Scene
     const [canMovePlayer, setCanMovePlayer] = useState(false);
+
+    // Player state variables
     const [health, setHealth] = useState(200);
     const [moves, setMoves] = useState(4500);
 
@@ -26,7 +28,7 @@ function App() {
      * This function is called when the scene changes in the Phaser game.
      * @param {Scene} scene 
      */
-    function currentScene (scene) {
+    function currentScene(scene) {
         setCanMovePlayer(scene.scene.key === 'Game');
     };
 
@@ -34,7 +36,7 @@ function App() {
      * Handles the player state changes.
      * @param {Player} playerState 
      */
-    function handlePlayerStateChanged(playerState){
+    function handlePlayerStateChange(playerState) {
         setHealth(playerState.health);
         setMoves(playerState.moves);
     };
@@ -49,27 +51,27 @@ function App() {
             EventBus.emit('move-player', direction);
         }
     };
-    
+
     /**
      * Starts the game by calling the startGame function.
      * This function is called when the start button is clicked in the ArcadeControlPanel.
      */
-    function handleStart(){
+    function handleStart() {
         startGame(phaserRef);
     }
-    
+
     /**
      * Resets the game state and starts a new game.
      * This function is called when the reset button is clicked in the ArcadeControlPanel.
      */
-    function handleReset(){
+    function handleReset() {
         resetGame(phaserRef);
-    }    
+    }
 
     return (
         <div id="app">
             <h1>Mud Lava Racer</h1>
-            <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChanged} />
+            <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChange} />
             <ArcadeControlPanel
                 onStart={handleStart}
                 onReset={handleReset}
