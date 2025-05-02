@@ -2,6 +2,8 @@ import { LightPalette, DarkPalette } from './Palette.config.js';
 
 class ThemeManager {
     constructor() {
+        // Will eventually allow for dark and light themes
+        // For now, we will just use the light theme
         this.currentTheme = LightPalette; // Default to light theme
     }
 

@@ -68,14 +68,6 @@ function App() {
         resetGame(phaserRef);
     }
 
-    /**
-     * Displays help information for the game.
-     * This function is called when the help button is clicked in the ArcadeControlPanel.
-     */
-    function handleHelp() {
-        alert("Use the arrow keys to move the player. Press Start to begin the game and Reset to restart.");
-    }
-
     return (
         <div id="app">
             <div className="title"><h1>Mud Lava Racer</h1></div>

@@ -1,3 +1,5 @@
+import { SpaceConstants } from "../../config/Space.config";
+
 /**
  * Represents the base class for different types of spaces in the game.
  */
@@ -28,12 +30,20 @@ class SpaceStatuses {
          * The color of the space, represented as a hexadecimal value.
          * @type {number}
          */
-        this.color = 0x000000; // Default color (black)
+        this.color = SpaceConstants.blankSpaceColor; // White
     }
 
     /**
-     * Gets the name of the space.
-     * @returns {string} The name of the space.
+     * Gets the color of the space.
+     * @returns {number} The color of the space.
+     */
+    getColor() {
+        return this.color;
+    }
+
+    /**
+     * Sets the color of the space.
+     * @param {number} color - The new color of the space.
      */
     getSpaceName() {
         return this.spaceName;
@@ -50,7 +60,6 @@ class BlankSpace extends SpaceStatuses {
         this.spaceName = "Blank";
         this.healthHit = 0;
         this.movesHit = -1;
-        this.color = 0xFFFFFF; // White
     }
 }
 
@@ -64,7 +73,7 @@ class SpeederSpace extends SpaceStatuses {
         this.spaceName = "Speeder";
         this.healthHit = -5;
         this.movesHit = 0;
-        this.color = 0x008223; // Green
+        this.color = SpaceConstants.speederSpaceColor;
     }
 }
 
@@ -78,7 +87,7 @@ class LavaSpace extends SpaceStatuses {
         this.spaceName = "Lava";
         this.healthHit = -50;
         this.movesHit = -10;
-        this.color = 0xdb2114; // Red
+        this.color = SpaceConstants.lavaSpaceColor;
     }
 }
 
@@ -90,9 +99,9 @@ class MudSpace extends SpaceStatuses {
     constructor() {
         super();
         this.spaceName = "Mud";
-        this.healthHit = -50;
-        this.movesHit = -10;
-        this.color = 0x452a28; // Brown
+        this.healthHit = -10;
+        this.movesHit = -5;
+        this.color = SpaceConstants.mudSpaceColor;
     }
 }
 
@@ -106,7 +115,6 @@ class StartSpace extends SpaceStatuses {
         this.spaceName = "Start";
         this.healthHit = 0;
         this.movesHit = 0;
-        this.color = 0xFFFFFF; // White
     }
 }
 
@@ -120,7 +128,7 @@ class GoalSpace extends SpaceStatuses {
         this.spaceName = "Goal";
         this.healthHit = 0;
         this.movesHit = 0;
-        this.color = 0xD5B60A; // Gold
+        this.color = SpaceConstants.goalSpaceColor;
     }
 }
 

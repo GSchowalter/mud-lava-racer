@@ -27,7 +27,7 @@ describe('Player Class', () => {
     it('should initialize with default values', () => {
         expect(player.getPosition()).toEqual([0, 0]);
         expect(player.getHealth()).toBe(200);
-        expect(player.getMoves()).toBe(4500);
+        expect(player.getMoves()).toBe(450);
     });
 
     it('should set and get position correctly', () => {
@@ -39,7 +39,7 @@ describe('Player Class', () => {
         const space = { healthHit: -20, movesHit: -50 };
         player.updateStatus(space);
         expect(player.getHealth()).toBe(180);
-        expect(player.getMoves()).toBe(4450);
+        expect(player.getMoves()).toBe(400);
         expect(EventBus.emit).toHaveBeenCalledWith('player-state-changed', player);
     });
 });
