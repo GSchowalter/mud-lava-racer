@@ -21,7 +21,7 @@ function App() {
 
     // Player state variables
     const [health, setHealth] = useState(200);
-    const [moves, setMoves] = useState(4500);
+    const [moves, setMoves] = useState(450);
 
     /**
      * Handles scene change events.
@@ -66,6 +66,14 @@ function App() {
      */
     function handleReset() {
         resetGame(phaserRef);
+    }
+
+    /**
+     * Displays help information for the game.
+     * This function is called when the help button is clicked in the ArcadeControlPanel.
+     */
+    function handleHelp() {
+        alert("Use the arrow keys to move the player. Press Start to begin the game and Reset to restart.");
     }
 
     return (

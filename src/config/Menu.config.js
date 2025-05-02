@@ -1,7 +1,9 @@
+import { GameConstants } from "./Game.config";
+
 const MenuConstants = {
-    titlePosition: [512, 320],
+    titlePosition: [GameConstants.windowWidth/2, 320],
     titleText: "Mud Lava Racer",
-    startPosition: [512, 420],
+    startPosition: [GameConstants.windowWidth/2, 420],
     startText: "Press Start",
     startFontSize: 24
 }

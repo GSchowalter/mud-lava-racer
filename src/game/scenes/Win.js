@@ -40,13 +40,6 @@ export class Win extends Scene {
     }
 
     /**
-     * Changes the current scene to the Main Menu.
-     */
-    changeScene() {
-        this.scene.start('MainMenu');
-    }
-
-    /**
      * Starts the Main Menu scene and resets the game state.
      * Emits a reset event before transitioning to the Main Menu.
      */

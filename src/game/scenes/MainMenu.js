@@ -9,12 +9,6 @@ import { MenuConstants } from '../../config/Menu.config.js';
  */
 export class MainMenu extends Scene {
     /**
-     * The tween animation for the logo.
-     * @type {Phaser.Tweens.Tween | null}
-     */
-    logoTween;
-
-    /**
      * Initializes the Main Menu scene.
      */
     constructor() {
@@ -57,55 +51,9 @@ export class MainMenu extends Scene {
     }
 
     /**
-     * Changes the current scene to the Game scene.
-     * Stops the logo tween animation if it is playing.
-     */
-    changeScene() {
-        if (this.logoTween) {
-            this.logoTween.stop();
-            this.logoTween = null;
-        }
-
-        this.scene.start('Game');
-    }
-
-    /**
      * Starts the Game scene.
      */
     start() {
         this.scene.start('Game');
-    }
-
-    /**
-     * Moves the logo with a tween animation.
-     * If the animation is already playing, it pauses or resumes it.
-     * If the animation is not playing, it creates a new tween animation.
-     *
-     * @param {function} reactCallback - A callback function to update the React state with the logo's position.
-     */
-    moveLogo(reactCallback) {
-        if (this.logoTween) {
-            if (this.logoTween.isPlaying()) {
-                this.logoTween.pause();
-            } else {
-                this.logoTween.play();
-            }
-        } else {
-            this.logoTween = this.tweens.add({
-                targets: this.logo,
-                x: { value: 750, duration: 3000, ease: 'Back.easeInOut' },
-                y: { value: 80, duration: 1500, ease: 'Sine.easeOut' },
-                yoyo: true,
-                repeat: -1,
-                onUpdate: () => {
-                    if (reactCallback) {
-                        reactCallback({
-                            x: Math.floor(this.logo.x),
-                            y: Math.floor(this.logo.y)
-                        });
-                    }
-                }
-            });
-        }
     }
 }

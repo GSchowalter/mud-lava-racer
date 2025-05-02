@@ -25,7 +25,7 @@ class Player {
          * The player's remaining moves.
          * @type {number}
          */
-        this.moves = 4500;
+        this.moves = 450;
     }
 
     /**
@@ -145,7 +145,7 @@ class Player {
         console.log("Player reset");
         this.setPosition(0, 0);
         this.setHealth(200);
-        this.setMoves(4500);
+        this.setMoves(450);
         EventBus.emit('player-state-changed', this);
     }
 }
