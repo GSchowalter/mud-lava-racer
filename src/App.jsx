@@ -1,138 +1,75 @@
-import { useRef, useState } from 'react';
+import { useState, useRef } from 'react';
+import React from 'react';
 
-import Phaser from 'phaser';
 import { PhaserGame } from './PhaserGame';
-import { EventBus } from './game/EventBus';
 import ArcadeControlPanel from './ArcadeControlPanel';
+import EventBus from './EventBus';
+import { startGame, resetGame } from './handlers/ArcadeControlPanel';
 
+/**
+ * Main App component that initializes the Phaser game and handles game state.
+ * It also manages the control panel for player actions and displays player status.
+ * 
+ * @returns {JSX.Element} The rendered App component.
+ */
 function App() {
-    // The sprite can only be moved in the MainMenu Scene
-    const [canMoveSprite, setCanMoveSprite] = useState(true);
+    //  References to the PhaserGame component (game and scene are exposed)
+    const phaserRef = useRef();
+
     // Player can only be moved in the Game Scene
     const [canMovePlayer, setCanMovePlayer] = useState(false);
-
     const [health, setHealth] = useState(200);
     const [moves, setMoves] = useState(4500);
 
-    //  References to the PhaserGame component (game and scene are exposed)
-    const phaserRef = useRef();
-    const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
-
-    const startGame = () => {
-        const scene = phaserRef.current.scene;
-
-        if (scene) {
-            //  Start the game scene
-            scene.start();
-        }
-    }
-
-    const resetGame = () => {
-        const scene = phaserRef.current.scene;
-
-        if (scene && (scene.scene.key === 'Game')) {
-            console.log("Resetting game from app.jsx");
-            scene.retry();
-        } else if (scene && (scene.scene.key === 'GameOver' || scene.scene.key === 'Win')) {
-            console.log("Resetting game from app.jsx");
-            scene.reset();
-        }
-    }
-
-    const changeScene = () => {
-
-        const scene = phaserRef.current.scene;
-
-        if (scene) {
-            scene.changeScene();
-        }
-    }
-
-    const moveSprite = () => {
-
-        const scene = phaserRef.current.scene;
-
-        if (scene && scene.scene.key === 'MainMenu') {
-            // Get the update logo position
-            scene.moveLogo(({ x, y }) => {
-
-                setSpritePosition({ x, y });
-
-            });
-        }
-    }
-
-    const addSprite = () => {
-
-        const scene = phaserRef.current.scene;
-
-        if (scene) {
-            // Add more stars
-            const x = Phaser.Math.Between(64, scene.scale.width - 64);
-            const y = Phaser.Math.Between(64, scene.scale.height - 64);
-
-            //  `add.sprite` is a Phaser GameObjectFactory method and it returns a Sprite Game Object instance
-            const star = scene.add.sprite(x, y, 'star');
-
-            //  ... which you can then act upon. Here we create a Phaser Tween to fade the star sprite in and out.
-            //  You could, of course, do this from within the Phaser Scene code, but this is just an example
-            //  showing that Phaser objects and systems can be acted upon from outside of Phaser itself.
-            scene.add.tween({
-                targets: star,
-                duration: 500 + Math.random() * 1000,
-                alpha: 0,
-                yoyo: true,
-                repeat: -1
-            });
-        }
-    };
-
-    // Event emitted from the PhaserGame component
-    const currentScene = (scene) => {
-        setCanMoveSprite(scene.scene.key !== 'MainMenu');
+    /**
+     * Handles scene change events.
+     * This function is called when the scene changes in the Phaser game.
+     * @param {Scene} scene 
+     */
+    function currentScene (scene) {
         setCanMovePlayer(scene.scene.key === 'Game');
     };
 
-    // Event emitted from the PhaserGame when player state changes
-    const handlePlayerStateChanged = (playerState) => {
-        console.log("handlePlayerStateChanged triggered", playerState);
+    /**
+     * Handles the player state changes.
+     * @param {Player} playerState 
+     */
+    function handlePlayerStateChanged(playerState){
         setHealth(playerState.health);
         setMoves(playerState.moves);
     };
 
-    const handleDirection = (direction) => {
-        // Add logic to move the sprite in the specified direction
+    /**
+     * Handles the direction input from the ArcadeControlPanel.
+     * @param {string} direction 
+     */
+    function handleDirection(direction) {
         if (canMovePlayer) {
             //  Emit the event to move the player in the Phaser scene
             EventBus.emit('move-player', direction);
         }
     };
-
-    const handleStart = () => {
-        startGame();
+    
+    /**
+     * Starts the game by calling the startGame function.
+     * This function is called when the start button is clicked in the ArcadeControlPanel.
+     */
+    function handleStart(){
+        startGame(phaserRef);
     }
-
-    const handleReset = () => {
-        console.log("Reset button hit");
-        resetGame();
-    }
+    
+    /**
+     * Resets the game state and starts a new game.
+     * This function is called when the reset button is clicked in the ArcadeControlPanel.
+     */
+    function handleReset(){
+        resetGame(phaserRef);
+    }    
 
     return (
         <div id="app">
             <h1>Mud Lava Racer</h1>
             <PhaserGame className="game-window" ref={phaserRef} currentActiveScene={currentScene} updatePlayerState={handlePlayerStateChanged} />
-            {/* <div>
-                <div>
-                    <button className="button" onClick={startGame}>Start Game</button>
-                </div>
-                <div>
-                    <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
-                </div>
-                <div className="spritePosition">Sprite Position:
-                    <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
-                </div>
-            </div> */}
-
             <ArcadeControlPanel
                 onStart={handleStart}
                 onReset={handleReset}

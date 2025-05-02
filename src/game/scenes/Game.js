@@ -61,7 +61,7 @@ export class Game extends Scene {
         console.log("event listeners added in Game scene");
 
         // Register keys
-        this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN');
+        this.keys = this.input.keyboard.addKeys('LEFT,RIGHT,UP,DOWN,W,A,S,D,G,L');
 
         console.log("Player sprite exists", this.playerSprite);
 
@@ -96,17 +96,23 @@ export class Game extends Scene {
         let isKeyPressed = false;
 
         // check for key presses
-        if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.LEFT) || Phaser.Input.Keyboard.JustDown(this.keys.A)) {
             this.playerState.moveLeft();
             isKeyPressed = true;
-        } else if (Phaser.Input.Keyboard.JustDown(this.keys.RIGHT)) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.RIGHT) || Phaser.Input.Keyboard.JustDown(this.keys.D)) {
             this.playerState.moveRight();
             isKeyPressed = true;
-        } else if (Phaser.Input.Keyboard.JustDown(this.keys.UP)) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.UP) || Phaser.Input.Keyboard.JustDown(this.keys.W)) {
             this.playerState.moveUp();
             isKeyPressed = true;
-        } else if (Phaser.Input.Keyboard.JustDown(this.keys.DOWN)) {
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.DOWN) || Phaser.Input.Keyboard.JustDown(this.keys.S)) {
             this.playerState.moveDown();
+            isKeyPressed = true;
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.G)) {
+            this.win();
+            isKeyPressed = true;
+        } else if (Phaser.Input.Keyboard.JustDown(this.keys.L)) {
+            this.lose();
             isKeyPressed = true;
         }
 
