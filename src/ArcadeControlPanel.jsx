@@ -55,13 +55,13 @@ const ArcadeControlPanel = ({ onStart, onReset, onDirection, health, moves }) =>
                     <div className="help-content">
                         <h2>How to Play</h2>
                         <p>Use the arrow keys or WASD to move your player across the grid.</p>
-                        <p>You have 450 moves to make it from point A (where you start) to point B in the bottom right corner.</p>
+                        <p>You have 450 moves to make it from point A (where you start) to point B in the bottom right corner. Don't let your health run out!</p>
                         <p>There are three obstacles:
                             <ul>
-                                <li style={{ color: '#db2114' }}>Lava: Red, Lose 50 health and 10 moves</li>
-                                <li style={{ color: '#452a28' }}>Mud: Brown, Lose 10 health and 5 moves</li>
-                                <li style={{ color: '#008223' }}>Speeder: Green, Lose 5 health but does not cost a move</li>
-                                <li style={{ color: '#D5B60A' }}>Goal: Gold, win the game!</li>
+                                <li style={{ color: `#${SpaceConstants.lavaSpaceColor.slice(2)}` }}>Lava: Red, Lose 50 health and 10 moves</li>
+                                <li style={{ color: `#${SpaceConstants.mudSpaceColor.slice(2)}` }}>Mud: Brown, Lose 10 health and 5 moves</li>
+                                <li style={{ color: `#${SpaceConstants.speederSpaceColor.slice(2)}` }}>Speeder: Green, Lose 5 health but does not cost a move</li>
+                                <li style={{ color: `#${SpaceConstants.goalSpaceColor.slice(2)}` }}>Goal: Gold, win the game!</li>
                             </ul>
                         </p>
                         <p>Click &quot;Start&quot; to begin the game and &quot;Reset&quot; to restart.</p>
