@@ -67,12 +67,6 @@ This project runs on the following versions of the libraries:
 | `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
 | `npm run test` | Run the test suite |
 
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
-
 ## Project Structure
 
 | Path                          | Description                                                                 |
@@ -86,14 +80,25 @@ The local development server runs on `http://localhost:8080` by default. Please 
 | `src/game`                    | Contains the game source code.                                             |
 | `src/game/main.jsx`           | The main **game** entry point. This contains the game configuration and starts the game. |
 | `src/game/scenes/`            | The Phaser Scenes are in this folder.                                      |
+| `src/game/dungeon/`           | Game objects and logic.                             |
+| `src/handlers/`               | Contains the logic for event handlers.                                 |
+| `src/config/`                  | Contains configuration constants used in game logic and scene rendering.                      |
+| `test/`                    | Contains the test files.                                                  |
 | `public/style.css`            | Some simple CSS rules to help with page layout.                            |
 | `public/assets`               | Contains the static assets used by the game.                               |
+
+## Testing
+
+Testing in this project is done using [Vitest](https://vitest.dev/). Vitest is a Vite-native unit test framework. Testing in this environmnet reqires running tests in a virtual browser environment using the jsdom library as well as mocking the phaser object to avoid browser dependent functionality from being run during testing. To run the tests, use the following command:
+
+```bash
+npm run test
+```
 
 ## React Bridge
 
 The `PhaserGame.jsx` component is the bridge between React and Phaser. It initializes the Phaser game and passes events between the two.
 The **EventBus.js** file is a simple event bus that allows you to emit and listen for events from both React and Phaser.
-
 
 ## Deploying to Production
 
