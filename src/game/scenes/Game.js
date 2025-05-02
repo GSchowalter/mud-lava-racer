@@ -131,7 +131,9 @@ export class Game extends Scene {
      * Updates the game state, including the player's position and status.
      */
     updateState() {
-        this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0] || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
+        this.playerMoved = this.oldPlayerPosition[0] !== this.playerState.getPosition()[0]
+            || this.oldPlayerPosition[1] !== this.playerState.getPosition()[1];
+
         if (this.playerMoved) {
             this.oldPlayerPosition = this.playerState.getPosition();
             this.updatePlayerState();

@@ -1,17 +1,28 @@
 import { Scene } from 'phaser';
 
+/**
+ * Represents the Boot scene in the game.
+ * The Boot scene is responsible for loading minimal assets and transitioning to the Preloader scene.
+ */
 export class Boot extends Scene {
+    /**
+     * Initializes the Boot scene.
+     */
     constructor() {
         super('Boot');
     }
 
+    /**
+     * Preloads minimal assets required for the game.
+     * This method loads the background image used in subsequent scenes.
+     */
     preload() {
-        //  The Boot Scene is typically used to load in any assets you require for your Preloader, such as a game logo or background.
-        //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
-
         this.load.image('background', 'assets/bg.png');
     }
 
+    /**
+     * Creates the Boot scene and transitions to the Preloader scene.
+     */
     create() {
         this.scene.start('Preloader');
     }
