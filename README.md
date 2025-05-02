@@ -7,10 +7,30 @@ through a dungeon to reach the finish.
 
 ## Game Manual
 
+### Get Started
+
+This game is deployed fully deployed on [Vercel](https://mud-lava-racer.vercel.app/). You can play the game there, or you can run it locally.
+
+#### Local Installation
+To run the game locally, start by cloning the repository and installing the dependencies:
+
+```bash
+git clone https://github.com/GSchowalter/mud-lava-racer.git
+cd mud-lava-racer
+npm install
+```
+Then, start the development server:
+
+```bash
+npm run dev
+```
+
+This will start a local server at `http://localhost:8080`. Navigate to that URL in your browser to play the game.
+
 ### Controls
 - **Arrow Keys or WASD**: Move the knight around the screen.
 - **Start**: Start the game from the main menu. Or navigate back to the main menu from the game over screen.
-- **Reset**: Reset health, moves, and go back to the start. Does not chagnge the board.
+- **Reset**: Reset health, moves, and go back to the start. Does not change the board.
 - **?**: Launch a help screen with instructions on how to play the game.
 - **G and L**: Win or lose the game. A secret command! Thanks for reading the manual. Knowledge is power!
 
@@ -21,6 +41,10 @@ through a dungeon to reach the finish.
 - **Speeder**: Green space that costs no moves to move to but takes away 5 health.
 - **Finish**: Yellow space. The goal of the game. You win when you reach this space.
 
+## Requirements
+
+[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+
 ### Versions
 
 This project runs on the following versions of the libraries:
@@ -28,10 +52,6 @@ This project runs on the following versions of the libraries:
 - [Phaser 3.88.2](https://github.com/phaserjs/phaser)
 - [React 19.0.0](https://github.com/facebook/react)s
 - [Vite 6.3.1](https://github.com/vitejs/vite)
-
-## Requirements
-
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
 
 ## Available Commands
 
