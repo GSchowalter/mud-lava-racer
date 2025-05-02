@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { PreloaderConstants } from '../../config/Preloder.config';
 
 /**
  * Represents the Preloader scene in the game.
@@ -21,10 +22,14 @@ export class Preloader extends Scene {
         this.add.image(512, 384, 'background');
 
         // Add a border for the loading bar
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+        this.add.rectangle(PreloaderConstants.barPosition[0], PreloaderConstants.barPosition[1], 468, 32).setStrokeStyle(1, 0xffffff)
+            .setOrigin(0.5, 0.5)
+            .setDepth(100);
 
         // Add the loading bar
-        const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
+        const bar = this.add.rectangle(PreloaderConstants.barPosition[0] - 230, PreloaderConstants.barPosition[1], 4, 28, 0xffffff)
+            .setOrigin(0, 0.5)
+            .setDepth(100);
 
         // Update the loading bar width based on the loading progress
         this.load.on('progress', (progress) => {
